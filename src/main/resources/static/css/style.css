@@ -1,0 +1,40 @@
+body {
+    background: #fdf8f8;
+}
+
+header > nav {
+    -webkit-box-shadow: 0 4px 8px -6px #000000;
+    box-shadow: 0 4px 8px -6px #000000;
+    z-index: 3;
+}
+
+header > .container-fluid {
+    -webkit-box-shadow: -3px 3px 8px -4px #000000;
+    box-shadow: -3px 3px 8px -4px #000000;
+    z-index: 2;
+    border-bottom-left-radius: 5px;
+}
+
+.custom-auth-font{
+    font-size: 18px;
+}
+
+.shadow-full{
+    position:absolute;
+    top: 30px;
+    left:0;
+    height: calc(100vh - 30px);
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.3);
+    cursor:pointer;
+}
+
+.bi{
+    cursor:pointer;
+}
+
+@media only screen and (max-width: 576px) {
+    header > .container-fluid {
+        border-radius: 0;
+    }
+}

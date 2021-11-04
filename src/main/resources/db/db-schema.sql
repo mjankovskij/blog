@@ -1,0 +1,8 @@
+CREATE TABLE PRODUCTS (
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    description VARCHAR (500) NOT NULL,
+    quantity INTEGER NOT NULL,
+    price DECIMAL(20, 2) NOT NULL
+);
