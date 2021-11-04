@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "Users")
+@Table(name = "Users",uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
 public class User {
     @Id
     @GeneratedValue

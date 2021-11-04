@@ -49,8 +49,4 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public String getFullName() {
-        return user.getUsername() + " " + user.getPassword();
-    }
-
 }

@@ -1,27 +1,56 @@
 // AUTH
-
 $('#register').click(function (e) {
     e.preventDefault();
-    $("#post-response").removeClass("d-none");
+    $("#register-response").removeClass("d-none");
     $.ajax({
         type: "POST",
-        url: "/create",
+        url: "/user/register",
         data: {
-            'username': $("#title").val(),
-            'password': $("#description").val(),
-            'passwordRepeat': $("#description").val()
+            'username': $("#username-register").val(),
+            'password': $("#password-register").val(),
+            'passwordRepeat': $("#password-repeat-register").val()
 
         },
         success: function (responseText) {
-            $("#post-response")
+            $("#register-response")
                 .addClass("alert-success")
                 .removeClass("alert-danger")
                 .text(responseText);
-            $("#title").val("");
-            $("#description").val("");
+            $("#username-register").val("");
+            $("#password-register").val("");
+            $("#password-repeat-register").val("");
         },
         error: function ({responseText}) {
-            $("#post-response")
+            $("#register-response")
+                .addClass("alert-danger")
+                .removeClass("alert-success")
+                .text(responseText);
+            console.log(responseText)
+        }
+    })
+});
+
+$('#login').click(function (e) {
+    e.preventDefault();
+    $("#login-response").removeClass("d-none");
+    $.ajax({
+        type: "POST",
+        url: "/user/login",
+        data: {
+            'username': $("#username-login").val(),
+            'password': $("#password-login").val()
+        },
+        success: function (responseText) {
+            $("#login-response")
+                .addClass("alert-success")
+                .removeClass("alert-danger")
+                .text(responseText);
+            $("#username-login").val("");
+            $("#password-login").val("");
+            setTimeout(() => window.location.reload(), 500);
+        },
+        error: function ({responseText}) {
+            $("#login-response")
                 .addClass("alert-danger")
                 .removeClass("alert-success")
                 .text(responseText);

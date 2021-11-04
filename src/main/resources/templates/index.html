@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>Blog</title>
@@ -15,21 +16,30 @@
 </head>
 
 <body>
-<header class="position-relative">
+<header class="fixed-top">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">BLOG</a>
 
-<div class="custom-auth-font p-2">
-    <i sec:authorize="isAuthenticated()" class="bi bi-person-circle"></i>
-    <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
-</div>
+            <div class="custom-auth-font p-2">
+    <span sec:authorize="isAuthenticated()">
+        Welcome, [[${#request.userPrincipal.principal.username}]]!
+    </span>
+
+                <a sec:authorize="isAuthenticated()" href="/logout">     <i class="bi bi-box-arrow-in-right"></i>
+
+
+                </a>
+                <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
+
+
+            </div>
 
         </div>
     </nav>
 
     <div class="container-fluid bg-light col-12 col-lg-3 col-md-4 col-sm-6 position-absolute top-100 end-0 p-2 d-none">
-<!--       FORM LOGIN-->
+        <!--       FORM LOGIN-->
         <form id="form-login">
             <div class="mb-3">
                 <label for="username-login" class="form-label">Username</label>
@@ -37,14 +47,15 @@
             </div>
             <div class="mb-3">
                 <label for="password-login" class="form-label">Password</label>
-                <input type="text" class="form-control" id="password-login">
+                <input type="password" class="form-control" id="password-login">
             </div>
             <div class="alert alert-danger p-1 d-none" id="auth-register"></div>
+            <div class="alert p-1 d-none" id="login-response"></div>
             <button type="submit" class="btn btn-primary col-12" id="login">Login</button>
             <div class="col-12 p-1">Don't have an account?</div>
             <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Register</button>
         </form>
-<!--FORM REGISTER-->
+        <!--FORM REGISTER-->
         <form id="form-register" class="d-none">
             <div class="mb-3">
                 <label for="username-register" class="form-label">Username</label>
@@ -52,13 +63,14 @@
             </div>
             <div class="mb-3">
                 <label for="password-register" class="form-label">Password</label>
-                <input type="text" class="form-control" id="password-register">
+                <input type="password" class="form-control" id="password-register">
             </div>
             <div class="mb-3">
                 <label for="password-repeat-register" class="form-label">Repeat password</label>
-                <input type="text" class="form-control" id="password-repeat-register">
+                <input type="password" class="form-control" id="password-repeat-register">
             </div>
             <div class="alert alert-danger p-1 d-none" id="auth-login"></div>
+            <div class="alert p-1 d-none" id="register-response"></div>
             <button type="submit" class="btn btn-primary col-12" id="register">Register</button>
             <div class="col-12 p-1">Already have an account?</div>
             <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Login</button>
@@ -67,7 +79,7 @@
 
 </header>
 
-<main class="pt-2">
+<main>
 
     <div class="container col-6">
         <form>
@@ -79,10 +91,9 @@
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" id="description">
             </div>
-            <div class="alert alert-danger p-1 d-none" id="post-response"></div>
+            <div class="alert p-1 d-none" id="post-response"></div>
             <button type="submit" class="btn btn-primary" id="create-post">Submit</button>
         </form>
-
 
         <div th:if="${#lists.isEmpty(posts)}">Post list is empty :(</div>
         <tr th:each="post: ${posts}">
@@ -90,18 +101,22 @@
             <br>
         </tr>
 
+       -----------
+        <li sec:authorize="isAuthenticated()">Authenticated users can see this</li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')">Admin</li>
+        <li sec:authorize="hasRole('ROLE_USER')">User</li>
+        ----------
         <tbody>
         <tr th:each="user: ${listUsers}">
-            <td th:text="${user.id}">User ID</td>
-            <td th:text="${user.username}">E-mail</td>
-            <td th:text="${user.password}">First Name</td>
+            <td th:text="${user.username}"></td>
         </tr>
         </tbody>
     </div>
+
+
 </main>
 
 <div class="shadow-full d-none"></div>
-
 
 
 <!--  Bootstrap Bundle with Popper -->

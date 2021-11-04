@@ -1,5 +1,10 @@
 body {
     background: #fdf8f8;
+    height: 150vh;
+}
+
+main {
+    padding-top: 64px;
 }
 
 header > nav {
@@ -15,23 +20,37 @@ header > .container-fluid {
     border-bottom-left-radius: 5px;
 }
 
-.custom-auth-font{
+.custom-auth-font {
     font-size: 18px;
 }
 
-.shadow-full{
-    position:absolute;
+.custom-auth-font a {
+    text-decoration: none;
+    color: #000;
+}
+
+.custom-auth-font a:hover {
+    color: #0c4788;
+}
+
+.bi {
+    cursor: pointer;
+}
+
+.bi:hover {
+    color: #0c4788;
+}
+
+.shadow-full {
+    position: fixed;
     top: 30px;
-    left:0;
+    left: 0;
     height: calc(100vh - 30px);
     width: 100vw;
     background: rgba(0, 0, 0, 0.3);
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.bi{
-    cursor:pointer;
-}
 
 @media only screen and (max-width: 576px) {
     header > .container-fluid {
