@@ -5,6 +5,8 @@ import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

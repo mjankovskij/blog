@@ -1,24 +1,20 @@
 package lt.codeacademy.blog.controller;
 
-import lt.codeacademy.blog.data.Post;
+import lt.codeacademy.blog.data.Role;
 import lt.codeacademy.blog.data.User;
-import lt.codeacademy.blog.repository.UserRepository;
-import lt.codeacademy.blog.service.PostService;
 import lt.codeacademy.blog.service.UserService;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -38,6 +34,9 @@ public class UserController {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(password);
             user.setPassword(encodedPassword);
+            Set<Role> setOfRoles = new HashSet<>();
+            setOfRoles.add(new Role("ROLE_USER", user));
+            user.setRoles(setOfRoles);
             userService.save(user);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());

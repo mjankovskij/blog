@@ -25,7 +25,6 @@ $('#register').click(function (e) {
                 .addClass("alert-danger")
                 .removeClass("alert-success")
                 .text(responseText);
-            console.log(responseText)
         }
     })
 });
@@ -45,8 +44,6 @@ $('#login').click(function (e) {
                 .addClass("alert-success")
                 .removeClass("alert-danger")
                 .text(responseText);
-            $("#username-login").val("");
-            $("#password-login").val("");
             setTimeout(() => window.location.reload(), 500);
         },
         error: function ({responseText}) {
@@ -91,8 +88,7 @@ $('#create-post').click(function (e) {
                 .addClass("alert-success")
                 .removeClass("alert-danger")
                 .text(responseText);
-            $("#title").val("");
-            $("#description").val("");
+            setTimeout(() => window.location.reload(), 500);
         },
         error: function ({responseText}) {
             $("#post-response")

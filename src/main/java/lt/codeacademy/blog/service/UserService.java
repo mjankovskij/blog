@@ -4,15 +4,17 @@ import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository postRepository) {
-        this.userRepository = postRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User findByUsername(String username){
+     return userRepository.findByUsername(username);
     }
 
     public void save(User user) {
@@ -32,10 +34,8 @@ public class UserService {
         }
     }
 
-    public boolean validatePassword(String password) {
-        if (password.length() >= 8) {
-            return true;
-        } else {
+    public void validatePassword(String password) {
+        if (password.length() < 8) {
             throw new IllegalArgumentException("Password length must be at least 8 symbols.");
         }
     }

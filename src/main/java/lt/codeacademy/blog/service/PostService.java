@@ -39,7 +39,7 @@ public class PostService {
     }
 
     public List<Post> getPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByDatetimeDesc();
     }
 
     public void updatePost(Post post) {

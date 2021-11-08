@@ -25,15 +25,16 @@ public class User {
     private String username;
     @NotNull
     private String password;
-    private Integer role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OrderBy("id")
     private Set<Post> posts;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OrderBy("id")
     private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
 
     public User(String username, String password) {
         this.username = username;
