@@ -37,7 +37,8 @@ header > .container-fluid {
 }
 
 nav .bi:hover,
-.card .bi:hover {
+.card-header .bi:hover,
+.comment-edit .bi:hover {
     color: #0d57a8;
 }
 
@@ -61,16 +62,40 @@ nav .bi:hover,
     display: block;
 }
 
-.modal-footer {
-    background: #dadada;
-}
 
 .col-comment {
-    width: calc(100% - 70px) !important;
+    width: calc(100% - 60px) !important;
 }
 
 .col-comment-send {
     width: 70px !important;
+    margin-left: -14px !important;
+}
+
+.comment {
+    min-height: 80px;
+}
+
+.comment .col-comment {
+    width: calc(100% - 52px) !important;
+    margin-right: 10px;
+}
+
+.comment .col-comment-send {
+    margin: 0px !important;
+
+}
+
+.comment-edit {
+    display: none;
+}
+
+.comment:hover .comment-edit {
+    display: block;
+}
+
+.modal-footer {
+    background: #dadada;
 }
 
 @media only screen and (max-width: 576px) {

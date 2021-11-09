@@ -8,6 +8,4 @@ import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
     public List<Post> findAllByOrderByDatetimeDesc();
-//
-//    public Post findPostBy(UUID id);
 }

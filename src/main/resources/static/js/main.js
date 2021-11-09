@@ -115,8 +115,6 @@ $('.delete-post').click(function (e) {
     e.preventDefault();
     const tempThis = $(this);
     confirmDialog("Delete post?", function () {
-        //My code to delete
-        console.log("deleted!");
         const closestCardDOM = tempThis.closest(".card");
         $.ajax({
             type: "POST",
@@ -187,4 +185,48 @@ $('.col-comment-send button').click(function (e) {
                 .text(responseText);
         }
     })
+});
+
+$('.edit-comment').click(function (e) {
+    const commentDOM = $(this).closest('.comment');
+    const text = commentDOM.find('.comment-text').text().replace(/ /g, '');
+    if (commentDOM.find('.btn').length === 0) {
+        commentDOM.find('.comment-text')
+            .html($('<input class="col-comment form-control float-start" />', {'value': text}).val(text));
+        commentDOM.append('<button class="btn btn-secondary float-start">\n' +
+            '<i class="bi bi-pencil-fill"></i>\n' +
+            '</button>')
+
+            .delegate('.btn', 'click', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/comment/edit",
+                    data: {
+                        'id': commentDOM.attr('id'),
+                        'comment': commentDOM.find('.col-comment').val()
+                    },
+                    success: function (responseText) {
+                        commentDOM.find('.comment-text').text(commentDOM.find('.col-comment').val());
+                        commentDOM.find('.btn').remove();
+                    },
+                    error: function ({responseText}) {
+                        $(".response-message-center")
+                            .removeClass("d-none")
+                            .addClass("alert-danger")
+                            .removeClass("alert-success")
+                            .css('opacity', '1')
+                            .clearQueue()
+                            .animate({opacity: 0}, 2000)
+                            .text(responseText)
+                            .delay(2000)
+                            .queue(function () {
+                                $(".response-message-center").addClass("d-none");
+                            });
+
+                    }
+                });
+
+            });
+    }
 });

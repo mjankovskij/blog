@@ -54,5 +54,17 @@ public class CommentController {
         return ResponseEntity.status(200).body("Post added successfully.");
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/edit")
+    public ResponseEntity<?> edit(@RequestParam String id, @RequestParam String comment) {
+        try {
+            Comment commentObj = commentService.getById(UUID.fromString(id));
+            commentObj.setComment(comment);
+            commentService.save(commentObj);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+        return ResponseEntity.status(200).body("Post updated successfully.");
+    }
 
 }

@@ -36,6 +36,7 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OrderBy("datetime DESC")
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
 

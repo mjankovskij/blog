@@ -100,7 +100,7 @@
         <div th:each="post: ${posts}">
             <div class="card mt-2">
                 <div class="card-header d-flex justify-content-between position-relative">
-                    <span th:text="${post.title}"></span>
+                    <b><span th:text="${post.title}"></span></b>
                     <div>
                         <span th:text="${post.user.username}"></span>,
                         <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
@@ -110,17 +110,30 @@
                          th:id="${post.getId()}"
                          sec:authorize="hasRole('ROLE_ADMIN')">
                         <i class="bi bi-pencil-fill p-2 edit-post"></i>
-                        <i class="bi bi-x-lg p-2 delete-post"></i></div>
+                        <i class="bi bi-x-lg p-2 delete-post"></i>
+                    </div>
                 </div>
                 <div class="card-body">
                     <p class="card-text" th:text="${post.description}"></p>
                 </div>
 
                 <div class="card-footer">
+                    <div class="col-12 mb-2" th:each="comment: ${post.comments}">
+                        <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
+                             th:id="${comment.id}">
+                            <b><span th:text="${comment.user.username}"></span></b>
+                            <div class="comment-text"><span th:text="${comment.comment}"></span></div>
+                            <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0">
+                                <i class="bi bi-pencil-fill p-2 edit-comment"></i>
+                                <i class="bi bi-x-lg p-2 delete-comment"></i>
+                            </div>
+
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-comment">
-                            <input type="text" class="form-control" th:id="${post.getId()}" name="comment">
+                            <input type="text" class="form-control" th:id="${post.id}" name="comment">
                         </div>
                         <div class="col-comment-send">
                             <button class="btn btn-secondary">
