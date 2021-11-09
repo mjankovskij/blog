@@ -1,9 +1,6 @@
 package lt.codeacademy.blog.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import lt.codeacademy.blog.data.Role;
 import lt.codeacademy.blog.data.User;
@@ -27,6 +24,10 @@ public class CustomUserDetails implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
+    }
+
+    public UUID getId() {
+        return user.getId();
     }
 
     @Override

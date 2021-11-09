@@ -95,16 +95,25 @@
             <button type="submit" class="btn btn-primary" id="create-post">Submit</button>
         </form>
 
-        <div th:if="${#lists.isEmpty(posts)}">Post list is empty :(</div>
+        <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Post list is empty.</div>
 
         <div th:each="post: ${posts}">
             <div class="card mt-2">
-                <div class="card-header d-flex justify-content-between">
-                    <span th:text="${post.getTitle()}"></span>
-                    <span th:text="${#dates.format(post.getDatetime(), 'yyyy-MM-dd HH:mm')}"></span>
+                <div class="card-header d-flex justify-content-between position-relative">
+                    <span th:text="${post.title}"></span>
+                    <div>
+                    <span th:text="${post.user.username}"></span>,
+                    <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+
+                    <div class="post-edit position-absolute bg-light border top-100 p-2 end-0"
+                         th:id="${post.getId()}"
+                         sec:authorize="hasRole('ROLE_ADMIN')">
+                        <i class="bi bi-pencil-fill p-2 edit-post"></i>
+                        <i class="bi bi-x-lg p-2 delete-post"></i></div>
                 </div>
                 <div class="card-body">
-                <p class="card-text" th:text="${post.getDescription()}"></p>
+                    <p class="card-text" th:text="${post.description}"></p>
                 </div>
             </div>
         </div>
@@ -120,16 +129,6 @@
                 <h2>Role Admin,</h2>
             </div>
         </div>
-        <div class="row" sec:authorize="hasAuthority('ROLE_USER')">
-            <div class="col-md-10 col-md-offset-2">
-                <h2>User Authority,</h2>
-            </div>
-        </div>
-        <div class="row" sec:authorize="hasAuthority('ROLE_ADMIN')">
-            <div class="col-md-10 col-md-offset-2">
-                <h2>Authority Admin</h2>
-            </div>
-        </div>
         ----------
         <tbody>
         <tr th:each="user: ${listUsers}">
@@ -138,10 +137,26 @@
         </tbody>
     </div>
 
+    <div class="shadow-full d-none"></div>
+    <div class="response-message-center d-none alert position-fixed top-50 start-50 p-2 rounded"></div>
+
+    <!-- Modal confirm -->
+    <div class="modal" id="confirmModal" style="display: none; z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="confirmMessage">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="confirmOk">Ok</button>
+                    <button class="btn btn-light" id="confirmCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 </main>
-
-<div class="shadow-full d-none"></div>
 
 
 <!--  Bootstrap Bundle with Popper -->

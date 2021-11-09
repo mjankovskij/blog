@@ -1,14 +1,26 @@
 package lt.codeacademy.blog.service;
 
 import lt.codeacademy.blog.data.Post;
+import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.PostRepository;
+import lt.codeacademy.blog.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class PostService {
+
+    @Autowired
+    UserRepository userRepository;
 
     private final PostRepository postRepository;
 
@@ -16,8 +28,11 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void savePost(Post post) {
+    public void save(Post post) {
         if (validateTitle(post.getTitle()) && validateDescription(post.getDescription())) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByUsername(auth.getName());
+            post.setUser(user);
             postRepository.save(post);
         }
     }
@@ -42,15 +57,8 @@ public class PostService {
         return postRepository.findAllByOrderByDatetimeDesc();
     }
 
-    public void updatePost(Post post) {
-        postRepository.save(post);
+    public void delete(UUID id) {
+        postRepository.deleteById(postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found.")).getId());
     }
 
-    public void deletePost(UUID id) {
-        postRepository.deleteById(id);
-    }
-
-    public Post getPost(UUID id) {
-        return postRepository.getById(id);
-    }
 }
