@@ -1,11 +1,15 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Post;
+import lt.codeacademy.blog.data.User;
+import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +24,8 @@ public class PostController {
     public ResponseEntity<?> handleAccessDeniedException() {
             return ResponseEntity.status(403).body("Access is denied!");
     }
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     private final PostService postService;
 
@@ -32,7 +37,9 @@ public class PostController {
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String description) {
         try {
-            postService.save(new Post(title, description));
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByUsername(auth.getName());
+            postService.save(new Post(user, title, description));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }

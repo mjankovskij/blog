@@ -31,15 +31,15 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OrderBy("id")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
 
-    public Post(String title, String description) {
+    public Post(User user, String title, String description) {
+        this.user = user;
         this.title = title;
         this.description = description;
     }

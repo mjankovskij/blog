@@ -1,19 +1,12 @@
 package lt.codeacademy.blog.service;
 
 import lt.codeacademy.blog.data.Post;
-import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.PostRepository;
 import lt.codeacademy.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,9 +23,6 @@ public class PostService {
 
     public void save(Post post) {
         if (validateTitle(post.getTitle()) && validateDescription(post.getDescription())) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByUsername(auth.getName());
-            post.setUser(user);
             postRepository.save(post);
         }
     }
