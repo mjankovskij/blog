@@ -1,6 +1,7 @@
 package lt.codeacademy.blog.data;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "Comments")
 public class Comment {
     @Id
@@ -23,7 +25,13 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Comment(String comment, Post post, User user) {
+        this.comment = comment;
+        this.post = post;
+        this.user = user;
+    }
 }

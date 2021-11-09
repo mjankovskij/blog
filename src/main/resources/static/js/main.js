@@ -78,10 +78,100 @@ $('#create-post').click(function (e) {
     $("#post-response").removeClass("d-none");
     $.ajax({
         type: "POST",
-        url: "/create",
+        url: "/post/create",
         data: {
             'title': $("#title").val(),
             'description': $("#description").val()
+        },
+        success: function (responseText) {
+            $("#post-response")
+                .addClass("alert-success")
+                .removeClass("alert-danger")
+                .text(responseText);
+            setTimeout(() => window.location.reload(), 500);
+        },
+        error: function ({responseText}) {
+            $("#post-response")
+                .addClass("alert-danger")
+                .removeClass("alert-success")
+                .text(responseText);
+        }
+    })
+});
+
+
+function confirmDialog(message, onConfirm) {
+    var fClose = function () {
+        modal.modal("hide");
+    };
+    var modal = $("#confirmModal");
+    modal.modal("show");
+    $("#confirmMessage").empty().append(message);
+    $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
+    $("#confirmCancel").unbind().one("click", fClose);
+}
+
+$('.delete-post').click(function (e) {
+    e.preventDefault();
+    const tempThis = $(this);
+    confirmDialog("Delete post?", function () {
+        //My code to delete
+        console.log("deleted!");
+        const closestCardDOM = tempThis.closest(".card");
+        $.ajax({
+            type: "POST",
+            url: "/post/delete",
+            data: {
+                'id': tempThis.parent().attr('id')
+            },
+            success: function (responseText) {
+                closestCardDOM.remove();
+                $(".response-message-center")
+                    .removeClass("d-none")
+                    .addClass("alert-success")
+                    .removeClass("alert-danger")
+                    .css('opacity', '1')
+                    .clearQueue()
+                    .animate({opacity: 0}, 2000)
+                    .text(responseText)
+                    .delay(2000)
+                    .queue(function () {
+                        tempThis.addClass("d-none");
+                    });
+            },
+            error: function ({responseText}) {
+                $(".response-message-center")
+                    .addClass("alert-danger")
+                    .removeClass("alert-success")
+                    .css('opacity', '1')
+                    .clearQueue()
+                    .animate({opacity: 0}, 2000)
+                    .text(responseText)
+                    .delay(2000)
+                    .queue(function () {
+                        tempThis.addClass("d-none");
+                    });
+            }
+        })
+    });
+});
+
+$('.edit-post').click(function (e) {
+    console.log($(this).parent().attr('id'))
+});
+
+$('.col-comment-send button').click(function (e) {
+    e.preventDefault();
+    const data = $(this).closest(".card").find("input[name='comment']");
+    const id = data.attr('id');
+    const comment = data.val();
+    $("#post-response").removeClass("d-none");
+    $.ajax({
+        type: "POST",
+        url: "/comment/create",
+        data: {
+            'id': id,
+            'comment': comment
         },
         success: function (responseText) {
             $("#post-response")

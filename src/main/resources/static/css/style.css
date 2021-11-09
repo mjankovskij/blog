@@ -29,15 +29,16 @@ header > .container-fluid {
 }
 
 .custom-auth-font a:hover {
-    color: #0c4788;
+    color: #0d57a8;
 }
 
 .bi {
     cursor: pointer;
 }
 
-.bi:hover {
-    color: #0c4788;
+nav .bi:hover,
+.card .bi:hover {
+    color: #0d57a8;
 }
 
 .shadow-full {
@@ -55,12 +56,21 @@ header > .container-fluid {
     -webkit-box-shadow: -5px 5px 15px 6px #FFFFFF;
     box-shadow: -5px 5px 15px 6px #FFFFFF;
 }
-.card:hover .post-edit{
+
+.card:hover .post-edit {
     display: block;
 }
 
-.modal-footer{
+.modal-footer {
     background: #dadada;
+}
+
+.col-comment {
+    width: calc(100% - 70px) !important;
+}
+
+.col-comment-send {
+    width: 70px !important;
 }
 
 @media only screen and (max-width: 576px) {

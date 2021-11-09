@@ -4,6 +4,7 @@ import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

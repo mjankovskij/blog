@@ -26,6 +26,7 @@ public class Post {
     @NotNull
     private String title;
     @NotNull
+    @Column(columnDefinition="TEXT")
     private String description;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
