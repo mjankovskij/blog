@@ -1,12 +1,12 @@
 package lt.codeacademy.blog.data;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
+import javax.validation.constraints.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
@@ -23,12 +23,13 @@ public class Comment {
     @Type(type="uuid-char")
     private UUID id;
     @Column(columnDefinition="TEXT", nullable = false)
+    @Size(min = 3, max = 15)
     private String comment;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 

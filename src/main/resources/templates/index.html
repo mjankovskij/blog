@@ -20,21 +20,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">BLOG</a>
-
             <div class="custom-auth-font p-2">
-    <span sec:authorize="isAuthenticated()">
-        Welcome, [[${#request.userPrincipal.principal.username}]]!
-    </span>
-
-                <a sec:authorize="isAuthenticated()" href="/logout"> <i class="bi bi-box-arrow-in-right"></i>
-
-
-                </a>
+                <span sec:authorize="isAuthenticated()">Welcome, [[${#request.userPrincipal.principal.username}]]!</span>
+                <a sec:authorize="isAuthenticated()" href="/logout"> <i class="bi bi-box-arrow-in-right"></i></a>
                 <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
-
-
             </div>
-
         </div>
     </nav>
 
@@ -76,62 +66,68 @@
             <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Login</button>
         </form>
     </div>
-
 </header>
-
+<!--    MAIN    -->
 <main>
-
-    <div class="container col-8">
-        <form>
+    <div class="container col-12">
+        <form sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title">
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <input type="text" class="form-control" id="description">
+                <textarea class="form-control" id="description" rows="3"></textarea>
             </div>
             <div class="alert p-1 d-none" id="post-response"></div>
             <button type="submit" class="btn btn-primary" id="create-post">Submit</button>
         </form>
 
-        <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Post list is empty.</div>
-
+        <!--    BLOG POSTS  -->
+        <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Blog is empty.</div>
         <div th:each="post: ${posts}">
-            <div class="card mt-2">
-                <div class="card-header d-flex justify-content-between position-relative">
+            <div class="post card mt-4" th:id="${post.getId()}">
+                <div class="card-header bg-secondary text-light d-flex justify-content-between position-relative">
                     <b><span th:text="${post.title}"></span></b>
                     <div>
                         <span th:text="${post.user.username}"></span>,
                         <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
                     </div>
-
+                    <!--    POST edit/delete    -->
                     <div class="post-edit position-absolute bg-light border top-100 p-2 end-0"
-                         th:id="${post.getId()}"
-                         sec:authorize="hasRole('ROLE_ADMIN')">
-                        <i class="bi bi-pencil-fill p-2 edit-post"></i>
+                         sec:authorize="isAuthenticated()"
+                         th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')
+                         or #authentication.getPrincipal().getId() == post.user.id}">
+                        <i class=" bi bi-pencil-fill p-2 edit-post
+                    "></i>
                         <i class="bi bi-x-lg p-2 delete-post"></i>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text" th:text="${post.description}"></p>
+                    <pre><p class="card-text" th:text="${post.description}"></p></pre>
                 </div>
-
+                <!--    COMMENT    -->
                 <div class="card-footer">
+                    <div class="text-end">
+                        Comments: <span th:text="${post.comments.size}"></span>
+                    </div>
                     <div class="col-12 mb-2" th:each="comment: ${post.comments}">
                         <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
                              th:id="${comment.id}">
                             <b><span th:text="${comment.user.username}"></span></b>
                             <div class="comment-text"><span th:text="${comment.comment}"></span></div>
-                            <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0">
+                            <!--    COMMENT edit/delete    -->
+                            <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0"
+                                 sec:authorize="isAuthenticated()"
+                                 th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or
+                                 #authentication.getPrincipal().getId() == comment.user.id}">
                                 <i class="bi bi-pencil-fill p-2 edit-comment"></i>
                                 <i class="bi bi-x-lg p-2 delete-comment"></i>
                             </div>
-
                         </div>
                     </div>
-
-                    <div class="row">
+                    <!--    COMMENT add     -->
+                    <div class="row" sec:authorize="isAuthenticated()">
                         <div class="col-comment">
                             <input type="text" class="form-control" th:id="${post.id}" name="comment">
                         </div>
@@ -165,7 +161,7 @@
     </div>
 
     <div class="shadow-full d-none"></div>
-    <div class="response-message-center d-none alert position-fixed top-50 start-50 p-2 rounded"></div>
+    <div class="response-message-center d-none alert position-fixed p-2 rounded"></div>
 
     <!-- Modal confirm -->
     <div class="modal" id="confirmModal" style="display: none; z-index: 1050;">

@@ -1,26 +1,27 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Comment;
-import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.PostRepository;
 import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 
-import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -28,7 +29,20 @@ import java.util.UUID;
 public class CommentController {
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<?> handleAccessDeniedException() {
-            return ResponseEntity.status(403).body("Access is denied!");
+        return ResponseEntity.status(403).body("Access is denied!");
+    }
+//    @ExceptionHandler({TransactionSystemException.class})
+//    public ResponseEntity<?> handleConstraintViolation(Exception ex) {
+//        return ResponseEntity.status(403).body(ex.getMessage());
+//    }
+
+    @ExceptionHandler({TransactionSystemException.class})
+    public ResponseEntity<?> handleConstraintViolation(Exception ex, WebRequest request) {
+        Throwable cause = ((TransactionSystemException) ex).getRootCause();
+        assert cause != null;
+        Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException) cause).getConstraintViolations();
+        Optional<ConstraintViolation<?>> str = constraintViolations.stream().findFirst();
+        return str.map(constraintViolation -> ResponseEntity.status(403).body("Comment " + constraintViolation.getMessage())).orElse(null);
     }
 
     private final UserRepository userRepository;
@@ -51,7 +65,7 @@ public class CommentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Post added successfully.");
+        return ResponseEntity.status(200).body("Comment added successfully.");
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -64,7 +78,18 @@ public class CommentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Post updated successfully.");
+        return ResponseEntity.status(200).body("Comment updated successfully.");
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam String id) {
+        try {
+            Comment commentObj = commentService.getById(UUID.fromString(id));
+            commentService.delete(commentObj);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+        return ResponseEntity.status(200).body("Comment deleted successfully.");
+    }
 }

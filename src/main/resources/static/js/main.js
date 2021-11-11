@@ -1,3 +1,14 @@
+function confirmDialog(message, onConfirm) {
+    var fClose = function () {
+        modal.modal("hide");
+    };
+    var modal = $("#confirmModal");
+    modal.modal("show");
+    $("#confirmMessage").empty().append(message);
+    $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
+    $("#confirmCancel").unbind().one("click", fClose);
+}
+
 // AUTH
 $('#register').click(function (e) {
     e.preventDefault();
@@ -99,31 +110,20 @@ $('#create-post').click(function (e) {
     })
 });
 
-
-function confirmDialog(message, onConfirm) {
-    var fClose = function () {
-        modal.modal("hide");
-    };
-    var modal = $("#confirmModal");
-    modal.modal("show");
-    $("#confirmMessage").empty().append(message);
-    $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
-    $("#confirmCancel").unbind().one("click", fClose);
-}
-
 $('.delete-post').click(function (e) {
     e.preventDefault();
     const tempThis = $(this);
     confirmDialog("Delete post?", function () {
-        const closestCardDOM = tempThis.closest(".card");
+        const postDOM = tempThis.closest(".post");
+        console.log()
         $.ajax({
             type: "POST",
             url: "/post/delete",
             data: {
-                'id': tempThis.parent().attr('id')
+                'id': postDOM.attr('id')
             },
             success: function (responseText) {
-                closestCardDOM.remove();
+                postDOM.remove();
                 $(".response-message-center")
                     .removeClass("d-none")
                     .addClass("alert-success")
@@ -172,17 +172,30 @@ $('.col-comment-send button').click(function (e) {
             'comment': comment
         },
         success: function (responseText) {
-            $("#post-response")
+            $(".response-message-center")
+                .removeClass("d-none")
                 .addClass("alert-success")
                 .removeClass("alert-danger")
-                .text(responseText);
+                .css('opacity', '1')
+                .clearQueue()
+                .animate({opacity: 0}, 1000)
+                .text(responseText)
+                .delay(1000);
             setTimeout(() => window.location.reload(), 500);
         },
         error: function ({responseText}) {
-            $("#post-response")
+            $(".response-message-center")
+                .removeClass("d-none")
                 .addClass("alert-danger")
                 .removeClass("alert-success")
-                .text(responseText);
+                .css('opacity', '1')
+                .clearQueue()
+                .animate({opacity: 0}, 2000)
+                .text(responseText)
+                .delay(2000)
+                .queue(function () {
+                    $(".response-message-center").addClass("d-none");
+                });
         }
     })
 });
@@ -223,10 +236,55 @@ $('.edit-comment').click(function (e) {
                             .queue(function () {
                                 $(".response-message-center").addClass("d-none");
                             });
-
                     }
                 });
 
             });
     }
+});
+
+$('.delete-comment').click(function (e) {
+    e.preventDefault();
+    const tempThis = $(this);
+    confirmDialog("Delete comment?", function () {
+        const commentDOM = tempThis.closest('.comment');
+        console.log(commentDOM.attr('id'))
+        $.ajax({
+            type: "POST",
+            url: "/comment/delete",
+            data: {
+                'id': commentDOM.attr('id')
+            },
+            success: function (responseText) {
+                console.log('a')
+                commentDOM.remove();
+                $(".response-message-center")
+                    .removeClass("d-none")
+                    .addClass("alert-success")
+                    .removeClass("alert-danger")
+                    .css('opacity', '1')
+                    .clearQueue()
+                    .animate({opacity: 0}, 2000)
+                    .text(responseText)
+                    .delay(2000)
+                    .queue(function () {
+                        tempThis.addClass("d-none");
+                    });
+            },
+            error: function ({responseText}) {
+                console.log('b')
+                $(".response-message-center")
+                    .addClass("alert-danger")
+                    .removeClass("alert-success")
+                    .css('opacity', '1')
+                    .clearQueue()
+                    .animate({opacity: 0}, 2000)
+                    .text(responseText)
+                    .delay(2000)
+                    .queue(function () {
+                        tempThis.addClass("d-none");
+                    });
+            }
+        })
+    });
 });

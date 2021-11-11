@@ -52,16 +52,13 @@ nav .bi:hover,
     cursor: pointer;
 }
 
-.post-edit {
-    display: none;
-    -webkit-box-shadow: -5px 5px 15px 6px #FFFFFF;
-    box-shadow: -5px 5px 15px 6px #FFFFFF;
+.card-body pre {
+    margin-bottom: 0;
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
-
-.card:hover .post-edit {
-    display: block;
-}
-
 
 .col-comment {
     width: calc(100% - 60px) !important;
@@ -82,8 +79,7 @@ nav .bi:hover,
 }
 
 .comment .col-comment-send {
-    margin: 0px !important;
-
+    margin: 0 !important;
 }
 
 .comment-edit {
@@ -92,14 +88,49 @@ nav .bi:hover,
 
 .comment:hover .comment-edit {
     display: block;
+    margin-top: -1px;
+    margin-right: -1px;
+    border-top-right-radius: 5px;
+}
+
+.post-edit {
+    color: #212529;
+    display: none;
+}
+
+.card:hover .post-edit {
+    display: block;
+    margin-top: 1px;
+    margin-right: -1px;
 }
 
 .modal-footer {
     background: #dadada;
 }
 
+.response-message-center {
+    margin: 0 !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.response-message-center::first-letter {
+    text-transform: capitalize;
+}
+
 @media only screen and (max-width: 576px) {
     header > .container-fluid {
         border-radius: 0;
+    }
+    .response-message-center {
+        top: 64px;
+        left: 2px;
+        width: calc(100% - 4px);
+        transform: none;
+    }
+    .container{
+        padding-left: 2px !important;
+        padding-right: 2px !important;
     }
 }
