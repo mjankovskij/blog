@@ -28,6 +28,7 @@ public class AppController {
         model.addAttribute("posts", postService.getPosts());
         List<User> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
+        model.addAttribute("user", new User());
         return "index";
     }
 

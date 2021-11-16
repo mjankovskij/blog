@@ -9,6 +9,41 @@ function confirmDialog(message, onConfirm) {
     $("#confirmCancel").unbind().one("click", fClose);
 }
 
+function form_submit_event(form_id){
+    const form = $(`#${form_id}`);
+    form.find('button:first-of-type').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            data: form.serialize(),
+            success: function(response) {
+                if ($(response).find('.invalid-feedback li').length) {
+                    form.replaceWith(response);
+                    $(`#${form_id}`).removeClass("d-none");
+                }else{
+                    location.reload();
+                }
+                form_submit_event(form_id);
+                swap_event(form_id);
+            }
+        });
+    });
+}
+
+form_submit_event("form-register");
+form_submit_event("form-login");
+
+function swap_event(form_id) {
+    $(`#${form_id}`).find('.auth-swap').click(function (e) {
+        e.preventDefault();
+        $('#form-login').toggleClass("d-none")
+        $('#form-register').toggleClass("d-none")
+    });
+}
+swap_event("form-register");
+swap_event("form-login");
+
 // AUTH
 $('#register').click(function (e) {
     e.preventDefault();
@@ -20,22 +55,29 @@ $('#register').click(function (e) {
             'username': $("#username-register").val(),
             'password': $("#password-register").val(),
             'passwordRepeat': $("#password-repeat-register").val()
-
         },
         success: function (responseText) {
-            $("#register-response")
-                .addClass("alert-success")
-                .removeClass("alert-danger")
-                .text(responseText);
-            $("#username-register").val("");
-            $("#password-register").val("");
-            $("#password-repeat-register").val("");
+            console.log(responseText)
+            // $("#register-response")
+            //     .addClass("alert-success")
+            //     .removeClass("alert-danger")
+            //     .text(responseText);
+            // $("#username-register").val("");
+            // $("#password-register").val("");
+            // $("#password-repeat-register").val("");
         },
-        error: function ({responseText}) {
-            $("#register-response")
-                .addClass("alert-danger")
-                .removeClass("alert-success")
-                .text(responseText);
+        error: function (responseJSON) {
+            console.log(responseJSON)
+            $.each(responseJSON, function (key) {
+                $("#form-register").find('.response').addClass("d-none");
+            });
+            $.each(responseJSON, function (key, item) {
+                $("#form-register").find(`.${key}.response`)
+                    .removeClass("d-none")
+                    .addClass("alert-danger")
+                    .removeClass("alert-success")
+                    .text(key + " " + item);
+            });
         }
     })
 });
@@ -66,16 +108,6 @@ $('#login').click(function (e) {
     })
 });
 
-$('#display-auth').click(function () {
-    $('header > .container-fluid').toggleClass("d-none")
-    $('.shadow-full').removeClass("d-none")
-});
-
-$('.auth-swap').click(function (e) {
-    e.preventDefault();
-    $('#form-login').toggleClass("d-none")
-    $('#form-register').toggleClass("d-none")
-});
 
 // BLOG
 
@@ -287,4 +319,9 @@ $('.delete-comment').click(function (e) {
             }
         })
     });
+});
+
+$('#display-auth').click(function () {
+    $('header > .container-fluid').toggleClass("d-none")
+    $('.shadow-full').removeClass("d-none")
 });

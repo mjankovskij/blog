@@ -42,7 +42,7 @@ public class CommentController {
         assert cause != null;
         Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException) cause).getConstraintViolations();
         Optional<ConstraintViolation<?>> str = constraintViolations.stream().findFirst();
-        return str.map(constraintViolation -> ResponseEntity.status(403).body("Comment " + constraintViolation.getMessage())).orElse(null);
+        return str.map(constraintViolation -> ResponseEntity.status(400).body("Comment " + constraintViolation.getMessage())).orElse(null);
     }
 
     private final UserRepository userRepository;

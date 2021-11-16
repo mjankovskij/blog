@@ -115,8 +115,13 @@ nav .bi:hover,
     transform: translate(-50%, -50%);
 }
 
-.response-message-center::first-letter {
+.response-message-center::first-letter,
+.response::first-letter,
+.invalid-feedback li::first-letter{
     text-transform: capitalize;
+}
+form li{
+    margin-left: -5px;
 }
 
 @media only screen and (max-width: 576px) {

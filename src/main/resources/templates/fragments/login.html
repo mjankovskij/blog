@@ -1,0 +1,32 @@
+<div th:fragment="info-form" th:remove="tag">
+
+    <form id="form-login" name="userInfo" th:action="@{/user/login}" th:object="${user}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{username}"
+                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')"
+            >
+            <ul th:if="${#fields.hasErrors('username')}" class="invalid-feedback">
+                <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password"
+                   class="form-control"
+                   th:field="*{password}"
+                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')"
+            >
+            <ul th:if="${error != null}" class="invalid-feedback">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-primary col-12">Login</button>
+        <div class="col-12 p-1">Don't have an account?</div>
+        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Register</button>
+    </form>
+</div>
+
+<div th:fragment="info-success" xmlns:th="http://www.thymeleaf.org" th:remove="tag">success</div>

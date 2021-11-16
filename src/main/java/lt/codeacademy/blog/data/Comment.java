@@ -1,5 +1,6 @@
 package lt.codeacademy.blog.data;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +20,16 @@ import java.util.UUID;
 public class Comment {
     @Id
     @GeneratedValue
+    @NotNull
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
     @Type(type="uuid-char")
     private UUID id;
+    @NotNull
     @Column(columnDefinition="TEXT", nullable = false)
     @Size(min = 3, max = 15)
     private String comment;
     @CreationTimestamp
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
 

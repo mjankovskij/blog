@@ -1,0 +1,44 @@
+<div th:fragment="info-form" th:remove="tag">
+
+    <form id="form-register" class="d-none" name="userInfo" th:action="@{/user/register}" th:object="${user}"
+          method="post">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{username}"
+                   th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : (${user.username ne null} ? 'is-valid' : '')"
+            >
+            <ul th:if="${#fields.hasErrors('username')}" class="invalid-feedback">
+                <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password"
+                   class="form-control"
+                   th:field="*{password}"
+                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : (${user.password ne null} ? 'is-valid' : '')"
+            >
+            <ul th:if="${#fields.hasErrors('password')}" class="invalid-feedback">
+                <li th:each="err : ${#fields.errors('password')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Repeat password</label>
+            <input type="password"
+                   class="form-control"
+                   th:field="*{passwordRepeat}"
+                   th:classappend="${#fields.hasErrors('passwordRepeat')} ? 'is-invalid' : (${user.passwordRepeat ne null} ? 'is-valid' : '')"
+            >
+            <ul th:if="${#fields.hasErrors('passwordRepeat')}" class="invalid-feedback">
+                <li th:each="err : ${#fields.errors('passwordRepeat')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-primary col-12">Register</button>
+        <div class="col-12 p-1">Already have an account?</div>
+        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Login</button>
+    </form>
+</div>
+
+<div th:fragment="info-success" xmlns:th="http://www.thymeleaf.org" th:remove="tag">success</div>
