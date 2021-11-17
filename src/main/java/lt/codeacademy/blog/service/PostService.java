@@ -22,9 +22,7 @@ public class PostService {
     }
 
     public void save(Post post) {
-        if (validateTitle(post.getTitle()) && validateDescription(post.getDescription())) {
             postRepository.save(post);
-        }
     }
 
     private boolean validateTitle(String title) {

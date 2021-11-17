@@ -38,26 +38,15 @@
 <!--    MAIN    -->
 <main>
     <div class="container col-12">
-        <form sec:authorize="hasRole('ROLE_ADMIN')">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title">
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" rows="3"></textarea>
-            </div>
-            <div class="alert p-1 d-none" id="post-response"></div>
-            <button type="submit" class="btn btn-primary" id="create-post">Submit</button>
-        </form>
-
+<!--    ADD POST    -->
+        <div th:replace="fragments/post.html :: info-form"></div>
         <!--    BLOG POSTS  -->
         <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Blog is empty.</div>
         <div th:each="post: ${posts}">
             <div class="post card mt-4" th:id="${post.getId()}">
                 <div class="card-header bg-secondary text-light d-flex justify-content-between position-relative">
-                    <b><span th:text="${post.title}"></span></b>
-                    <div>
+                    <b><span th:text="${post.title}" class="col-8 col-sm-7 title"></span></b>
+                    <div class="col-4 col-sm-5 text-end">
                         <span th:text="${post.user.username}"></span>,
                         <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
                     </div>
@@ -72,9 +61,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <pre><p class="card-text" th:text="${post.description}"></p></pre>
+                    <pre><p class="card-text description" th:text="${post.description}"></p></pre>
                 </div>
-                <!--    COMMENT    -->
+                <!--    COMMENTS    -->
                 <div class="card-footer">
                     <div class="text-end">
                         Comments: <span th:text="${post.comments.size}"></span>
@@ -83,7 +72,7 @@
                         <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
                              th:id="${comment.id}">
                             <b><span th:text="${comment.user.username}"></span></b>
-                            <div class="comment-text"><span th:text="${comment.comment}"></span></div>
+                            <div class="comment-text"><span th:text="${comment.text}"></span></div>
                             <!--    COMMENT edit/delete    -->
                             <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0"
                                  sec:authorize="isAuthenticated()"
@@ -95,16 +84,7 @@
                         </div>
                     </div>
                     <!--    COMMENT add     -->
-                    <div class="row" sec:authorize="isAuthenticated()">
-                        <div class="col-comment">
-                            <input type="text" class="form-control" th:id="${post.id}" name="comment">
-                        </div>
-                        <div class="col-comment-send">
-                            <button class="btn btn-secondary">
-                                <i class="bi bi-send"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <div th:replace="fragments/comment.html :: info-form"></div>
                 </div>
             </div>
         </div>

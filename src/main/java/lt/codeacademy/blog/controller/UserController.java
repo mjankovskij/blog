@@ -24,15 +24,12 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegister(@Valid @ModelAttribute("user") User user,
+    public String processRegister(@Valid @ModelAttribute("newUser") User user,
                                   BindingResult result,
                                   HttpServletRequest request) {
-        // if any errors, re-render the user info edit form
         if (result.hasErrors()) {
             return "fragments/register :: info-form";
         }
-        // let the service layer handle the saving of the validated form fields
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         String passPlain = user.getPassword();
@@ -50,11 +47,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String processLogin(
-            @ModelAttribute("user") User user,
-            BindingResult result,
-            HttpServletRequest request,
-            Model model) {
+    public String processLogin(@ModelAttribute("newUser") User user,
+                               BindingResult result,
+                               HttpServletRequest request,
+                               Model model) {
         try {
             request.login(user.getUsername(), user.getPassword());
             return "fragments/login :: info-success";
@@ -62,15 +58,5 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
             return "fragments/login :: info-form";
         }
-    }
-
-    @PostMapping("/logidsan")
-    public ResponseEntity<?> processLoginads(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
-        try {
-            request.login(username, password);
-        } catch (IllegalArgumentException | ServletException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
-        return ResponseEntity.status(200).body("Login successfully.");
     }
 }

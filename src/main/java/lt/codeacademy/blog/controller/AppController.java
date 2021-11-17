@@ -1,5 +1,7 @@
 package lt.codeacademy.blog.controller;
 
+import lt.codeacademy.blog.data.Comment;
+import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.PostService;
@@ -28,7 +30,9 @@ public class AppController {
         model.addAttribute("posts", postService.getPosts());
         List<User> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-        model.addAttribute("user", new User());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("newPost", new Post());
+        model.addAttribute("newComment", new Comment());
         return "index";
     }
 
