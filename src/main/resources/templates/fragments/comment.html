@@ -2,13 +2,11 @@
     <form class="row form-comment-create" sec:authorize="isAuthenticated()" th:action="@{/comment/create}" th:object="${newComment}" method="post">
         <input type="hidden"
                class="form-control"
-               th:field="*{id}"
-        >
+               th:field="*{id}">
         <input type="text"
                class="form-control col-comment"
                th:field="*{text}"
-               th:classappend="${#fields.hasErrors('text')} ? 'is-invalid' : (${newComment.text ne null} ? 'is-valid' : '')"
-        >
+               th:classappend="${#fields.hasErrors('text')} ? 'is-invalid' : (${newComment.text ne null} ? 'is-valid' : '')">
         <div class="col-comment-send">
             <button type="submit" class="btn btn-secondary">
                 <i class="bi bi-send"></i>

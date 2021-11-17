@@ -1,0 +1,53 @@
+<div th:fragment="posts" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Blog is empty.</div>
+    <div th:each="post: ${posts.content}">
+        <div class="post card mt-4" th:id="${post.getId()}">
+            <div class="card-header bg-secondary text-light d-flex justify-content-between position-relative">
+                <b><span th:text="${post.title}" class="col-8 col-sm-7 title"></span></b>
+                <div class="col-4 col-sm-5 text-end">
+                    <span th:text="${post.user.username}"></span>,
+                    <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <!--    POST edit/delete    -->
+                <div class="post-edit position-absolute bg-light border top-100 p-2 end-0"
+                     sec:authorize="isAuthenticated()"
+                     th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')
+                         or #authentication.getPrincipal().getId() == post.user.id}">
+                    <i class=" bi bi-pencil-fill p-2 edit-post"></i>
+                    <form th:action="@{/post/delete}" method="POST">
+                        <button type="submit"><i class="bi bi-x-lg p-2 delete-post"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="card-body">
+                <pre><p class="card-text description" th:text="${post.description}"></p></pre>
+            </div>
+            <!--    COMMENTS    -->
+            <div class="card-footer">
+                <div class="text-end">
+                    Comments: <span th:text="${post.comments.size}"></span>
+                </div>
+                <div class="col-12 mb-2" th:each="comment: ${post.comments}">
+                    <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
+                         th:id="${comment.id}">
+                        <b><span th:text="${comment.user.username}"></span></b>
+                        <div class="comment-text text"><span th:text="${comment.text}"></span></div>
+                        <!--    COMMENT edit/delete    -->
+                        <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0"
+                             sec:authorize="isAuthenticated()"
+                             th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or
+                                 #authentication.getPrincipal().getId() == comment.user.id}">
+                            <i class="bi bi-pencil-fill p-2 edit-comment"></i>
+                            <form th:action="@{/comment/delete}" method="POST">
+                                <button type="submit"><i class="bi bi-x-lg p-2 delete-comment"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--    COMMENT add     -->
+                <div th:replace="fragments/comment.html :: info-form"></div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/posts-pagination.html :: pagination"></div>
+</div>

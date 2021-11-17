@@ -16,96 +16,15 @@
 </head>
 
 <body>
-<header class="fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">BLOG</a>
-            <div class="custom-auth-font p-2">
-                <span sec:authorize="isAuthenticated()">Welcome, [[${#request.userPrincipal.principal.username}]]!</span>
-                <a sec:authorize="isAuthenticated()" href="/user/logout"> <i class="bi bi-box-arrow-in-right"></i></a>
-                <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
-            </div>
-        </div>
-    </nav>
+<div th:replace="fragments/header.html :: header"></div>
 
-    <div class="container-fluid bg-light col-12 col-lg-3 col-md-4 col-sm-6 position-absolute top-100 end-0 p-2 d-none">
-        <!--       FORM LOGIN-->
-        <div th:replace="fragments/login.html :: info-form"></div>
-        <!--FORM REGISTER-->
-        <div th:replace="fragments/register.html :: info-form"></div>
-    </div>
-</header>
 <!--    MAIN    -->
 <main>
     <div class="container col-12">
-<!--    ADD POST    -->
+        <!--    ADD POST    -->
         <div th:replace="fragments/post.html :: info-form"></div>
         <!--    BLOG POSTS  -->
-        <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Blog is empty.</div>
-        <div th:each="post: ${posts}">
-            <div class="post card mt-4" th:id="${post.getId()}">
-                <div class="card-header bg-secondary text-light d-flex justify-content-between position-relative">
-                    <b><span th:text="${post.title}" class="col-8 col-sm-7 title"></span></b>
-                    <div class="col-4 col-sm-5 text-end">
-                        <span th:text="${post.user.username}"></span>,
-                        <span th:text="${#dates.format(post.datetime, 'yyyy-MM-dd HH:mm')}"></span>
-                    </div>
-                    <!--    POST edit/delete    -->
-                    <div class="post-edit position-absolute bg-light border top-100 p-2 end-0"
-                         sec:authorize="isAuthenticated()"
-                         th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')
-                         or #authentication.getPrincipal().getId() == post.user.id}">
-                        <i class=" bi bi-pencil-fill p-2 edit-post
-                    "></i>
-                        <i class="bi bi-x-lg p-2 delete-post"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <pre><p class="card-text description" th:text="${post.description}"></p></pre>
-                </div>
-                <!--    COMMENTS    -->
-                <div class="card-footer">
-                    <div class="text-end">
-                        Comments: <span th:text="${post.comments.size}"></span>
-                    </div>
-                    <div class="col-12 mb-2" th:each="comment: ${post.comments}">
-                        <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
-                             th:id="${comment.id}">
-                            <b><span th:text="${comment.user.username}"></span></b>
-                            <div class="comment-text text"><span th:text="${comment.text}"></span></div>
-                            <!--    COMMENT edit/delete    -->
-                            <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0"
-                                 sec:authorize="isAuthenticated()"
-                                 th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or
-                                 #authentication.getPrincipal().getId() == comment.user.id}">
-                                <i class="bi bi-pencil-fill p-2 edit-comment"></i>
-                                <i class="bi bi-x-lg p-2 delete-comment"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!--    COMMENT add     -->
-                    <div th:replace="fragments/comment.html :: info-form"></div>
-                </div>
-            </div>
-        </div>
-
-        -----------
-        <div class="row" sec:authorize="hasRole('ROLE_USER')">
-            <div class="col-md-10 col-md-offset-2">
-                <h2>User Role,</h2>
-            </div>
-        </div>
-        <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
-            <div class="col-md-10 col-md-offset-2">
-                <h2>Role Admin,</h2>
-            </div>
-        </div>
-        ----------
-        <tbody>
-        <tr th:each="user: ${listUsers}">
-            <td th:text="${user.username}"></td>
-        </tr>
-        </tbody>
+        <div th:replace="fragments/posts.html :: posts"></div>
     </div>
 
     <div class="shadow-full d-none"></div>
@@ -124,10 +43,7 @@
             </div>
         </div>
     </div>
-
-
 </main>
-
 
 <!--  Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

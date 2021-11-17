@@ -1,0 +1,22 @@
+<div th:fragment="header" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BLOG</a>
+                <div class="custom-auth-font p-2">
+                    <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
+                    <span sec:authorize="isAuthenticated()">Welcome, [[${#request.userPrincipal.principal.username}]]!</span>
+                    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit"><i class="bi bi-box-arrow-in-right"></i></button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid bg-light col-12 col-lg-3 col-md-4 col-sm-6 position-absolute top-100 end-0 p-2 d-none">
+            <!--       FORM LOGIN-->
+            <div th:replace="fragments/login.html :: info-form"></div>
+            <!--FORM REGISTER-->
+            <div th:replace="fragments/register.html :: info-form"></div>
+        </div>
+    </header>
+</div>

@@ -6,8 +6,7 @@
             <input type="text"
                    class="form-control"
                    th:field="*{username}"
-                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')"
-            >
+                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')">
             <ul th:if="${#fields.hasErrors('username')}" class="invalid-feedback">
                 <li th:each="err : ${#fields.errors('username')}" th:text="${err}"></li>
             </ul>
@@ -17,8 +16,7 @@
             <input type="password"
                    class="form-control"
                    th:field="*{password}"
-                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')"
-            >
+                   th:classappend="${error != null} ? 'is-invalid' : (${error ne null} ? 'is-valid' : '')">
             <ul th:if="${error != null}" class="invalid-feedback">
                 <li th:text="${error}"></li>
             </ul>

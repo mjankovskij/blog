@@ -39,16 +39,10 @@ public class Post {
     private Date datetime;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
     @OrderBy("datetime ASC")
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
-
-    public Post(User user, String title, String description) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-    }
 }

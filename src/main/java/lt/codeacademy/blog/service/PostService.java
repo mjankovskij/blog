@@ -4,6 +4,8 @@ import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.repository.PostRepository;
 import lt.codeacademy.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,24 +23,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    public Page<Post> getPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
     public void save(Post post) {
             postRepository.save(post);
-    }
-
-    private boolean validateTitle(String title) {
-        if (title.length() >= 5 && title.length() <= 50) {
-            return true;
-        } else {
-            throw new IllegalArgumentException("Title length must be between 5 - 50.");
-        }
-    }
-
-    private boolean validateDescription(String description) {
-        if (description.length() >= 50) {
-            return true;
-        } else {
-            throw new IllegalArgumentException("Description length must be at least 50 symbols.");
-        }
     }
 
     public List<Post> getPosts() {

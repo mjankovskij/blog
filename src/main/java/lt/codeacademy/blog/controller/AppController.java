@@ -6,7 +6,10 @@ import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +29,9 @@ public class AppController {
     }
 
     @GetMapping
-    public String loadProducts(Model model) {
-        model.addAttribute("posts", postService.getPosts());
+    public String loadProducts(Model model, @PageableDefault(size = 5)
+    @SortDefault(sort = "datetime", direction = Sort.Direction.DESC) Pageable pageable) {
+        model.addAttribute("posts", postService.getPosts(pageable));
         List<User> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("newUser", new User());

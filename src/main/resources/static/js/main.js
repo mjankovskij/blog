@@ -17,7 +17,11 @@ function form_submit_event(form_id) {
                         $(`.${form_id}`).removeClass("d-none");
                     } else if ($(response).find('.alert-success').length) {
                         form.replaceWith(response);
-                        setTimeout(() => window.location.reload(), 500);
+                        if(form_id === "form-post-create") {
+                            setTimeout(() => window.location.href = window.location.origin, 500);
+                        }else{
+                            setTimeout(() => window.location.reload(), 500);
+                        }
                     } else {
                         location.reload();
                     }
@@ -61,10 +65,10 @@ $('#display-auth').click(function () {
 
 // confirm
 function confirmDialog(message, onConfirm) {
-    var fClose = function () {
+    const fClose = function () {
         modal.modal("hide");
     };
-    var modal = $("#confirmModal");
+    const modal = $("#confirmModal");
     modal.modal("show");
     $("#confirmMessage").empty().append(message);
     $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
@@ -83,7 +87,7 @@ $('.edit-post').click(function (e) {
     $(window).scrollTop(0);
 });
 
-
+// COMMENT
 $('.edit-comment').click(function (e) {
     const postDOM = $(this).closest(".post");
     const commentDOM = $(this).closest(".comment");
@@ -95,131 +99,52 @@ $('.edit-comment').click(function (e) {
     $(window).scrollTop(postDOM.height()+postDOM.offset().top-window.innerHeight/2);
 });
 
-$('.delete-post').click(function (e) {
-    e.preventDefault();
-    const tempThis = $(this);
-    confirmDialog("Delete post?", function () {
-        const postDOM = tempThis.closest(".post");
-        $.ajax({
-            type: "POST",
-            url: "/post/delete",
-            data: {
-                'id': postDOM.attr('id')
-            },
-            success: function (responseText) {
-                postDOM.remove();
-                $(".response-message-center")
-                    .removeClass("d-none")
-                    .addClass("alert-success")
-                    .removeClass("alert-danger")
-                    .css('opacity', '1')
-                    .clearQueue()
-                    .animate({opacity: 0}, 2000)
-                    .text(responseText)
-                    .delay(2000)
-                    .queue(function () {
-                        tempThis.addClass("d-none");
-                    });
-            },
-            error: function ({responseText}) {
-                $(".response-message-center")
-                    .addClass("alert-danger")
-                    .removeClass("alert-success")
-                    .css('opacity', '1')
-                    .clearQueue()
-                    .animate({opacity: 0}, 2000)
-                    .text(responseText)
-                    .delay(2000)
-                    .queue(function () {
-                        tempThis.addClass("d-none");
-                    });
-            }
-        })
+//DELETE
+function delete_form_event(value) {
+    $(`.delete-${value}`).click(function (e) {
+        e.preventDefault();
+        const tempThis = $(this);
+        confirmDialog(`Delete ${value}?`, function () {
+            const valDOM = tempThis.closest(`.${value}`);
+            const form = tempThis.closest('form');
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: {
+                    'id': valDOM.attr('id'),
+                    '_csrf': form.find('input[name="_csrf"]').val()
+                },
+                success: function (responseText) {
+                    valDOM.remove();
+                    $(".response-message-center")
+                        .removeClass("d-none")
+                        .addClass("alert-success")
+                        .removeClass("alert-danger")
+                        .css('opacity', '1')
+                        .clearQueue()
+                        .animate({opacity: 0}, 2000)
+                        .text(responseText)
+                        .delay(2000)
+                        .queue(function () {
+                            tempThis.addClass("d-none");
+                        });
+                },
+                error: function ({responseText}) {
+                    $(".response-message-center")
+                        .addClass("alert-danger")
+                        .removeClass("alert-success")
+                        .css('opacity', '1')
+                        .clearQueue()
+                        .animate({opacity: 0}, 2000)
+                        .text(responseText)
+                        .delay(2000)
+                        .queue(function () {
+                            tempThis.addClass("d-none");
+                        });
+                }
+            })
+        });
     });
-});
-
-// $('.edit-comment').click(function (e) {
-//     const commentDOM = $(this).closest('.comment');
-//     const text = commentDOM.find('.comment-text').text().replace(/ /g, '');
-//     if (commentDOM.find('.btn').length === 0) {
-//         commentDOM.find('.comment-text')
-//             .html($('<input class="col-comment form-control float-start" />', {'value': text}).val(text));
-//         commentDOM.append('<button class="btn btn-secondary float-start">\n' +
-//             '<i class="bi bi-pencil-fill"></i>\n' +
-//             '</button>')
-//
-//             .delegate('.btn', 'click', function (e) {
-//                 e.preventDefault();
-//                 $.ajax({
-//                     type: "POST",
-//                     url: "/comment/edit",
-//                     data: {
-//                         'id': commentDOM.attr('id'),
-//                         'comment': commentDOM.find('.col-comment').val()
-//                     },
-//                     success: function (responseText) {
-//                         commentDOM.find('.comment-text').text(commentDOM.find('.col-comment').val());
-//                         commentDOM.find('.btn').remove();
-//                     },
-//                     error: function ({responseText}) {
-//                         $(".response-message-center")
-//                             .removeClass("d-none")
-//                             .addClass("alert-danger")
-//                             .removeClass("alert-success")
-//                             .css('opacity', '1')
-//                             .clearQueue()
-//                             .animate({opacity: 0}, 2000)
-//                             .text(responseText)
-//                             .delay(2000)
-//                             .queue(function () {
-//                                 $(".response-message-center").addClass("d-none");
-//                             });
-//                     }
-//                 });
-//
-//             });
-//     }
-// });
-
-$('.delete-comment').click(function (e) {
-    e.preventDefault();
-    const tempThis = $(this);
-    confirmDialog("Delete comment?", function () {
-        const commentDOM = tempThis.closest('.comment');
-        $.ajax({
-            type: "POST",
-            url: "/comment/delete",
-            data: {
-                'id': commentDOM.attr('id')
-            },
-            success: function (responseText) {
-                commentDOM.remove();
-                $(".response-message-center")
-                    .removeClass("d-none")
-                    .addClass("alert-success")
-                    .removeClass("alert-danger")
-                    .css('opacity', '1')
-                    .clearQueue()
-                    .animate({opacity: 0}, 2000)
-                    .text(responseText)
-                    .delay(2000)
-                    .queue(function () {
-                        tempThis.addClass("d-none");
-                    });
-            },
-            error: function ({responseText}) {
-                $(".response-message-center")
-                    .addClass("alert-danger")
-                    .removeClass("alert-success")
-                    .css('opacity', '1')
-                    .clearQueue()
-                    .animate({opacity: 0}, 2000)
-                    .text(responseText)
-                    .delay(2000)
-                    .queue(function () {
-                        tempThis.addClass("d-none");
-                    });
-            }
-        })
-    });
-});
+}
+delete_form_event("comment");
+delete_form_event("post");

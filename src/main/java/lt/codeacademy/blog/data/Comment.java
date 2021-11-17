@@ -34,16 +34,10 @@ public class Comment {
     private Date datetime;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false, updatable = false)
     private Post post;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
-
-    public Comment(String text, Post post, User user) {
-        this.text = text;
-        this.post = post;
-        this.user = user;
-    }
 }
