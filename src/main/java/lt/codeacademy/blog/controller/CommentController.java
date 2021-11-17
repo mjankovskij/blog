@@ -1,6 +1,7 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Comment;
+import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.PostRepository;
 import lt.codeacademy.blog.repository.UserRepository;
@@ -12,14 +13,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -56,24 +57,42 @@ public class CommentController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestParam String id, @RequestParam String comment) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByUsername(auth.getName());
-            commentService.save(new Comment(comment, postRepository.getById(UUID.fromString(id)), user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+    @PostMapping(value = "/create")
+    public String processCreate(@Valid @ModelAttribute("newComment") Comment comment,
+                                BindingResult result,
+                                @RequestParam String post_id,
+                                Model model) {
+        if (result.hasErrors()) {
+            return "fragments/comment :: info-form";
         }
-        return ResponseEntity.status(200).body("Comment added successfully.");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName());
+        comment.setUser(user);
+        comment.setPost(postRepository.getById(UUID.fromString(post_id)));
+        commentService.save(comment);
+        model.addAttribute("success", "Comment saved successfully.");
+        return "fragments/comment :: info-form";
     }
+
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PostMapping("/createold")
+//    public ResponseEntity<?> create(@RequestParam String id, @RequestParam String comment) {
+//        try {
+//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//            User user = userRepository.findByUsername(auth.getName());
+//            commentService.save(new Comment(comment, postRepository.getById(UUID.fromString(id)), user));
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+//        return ResponseEntity.status(200).body("Comment added successfully.");
+//    }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/edit")
     public ResponseEntity<?> edit(@RequestParam String id, @RequestParam String comment) {
         try {
             Comment commentObj = commentService.getById(UUID.fromString(id));
-            commentObj.setComment(comment);
+            commentObj.setText(comment);
             commentService.save(commentObj);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());

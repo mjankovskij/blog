@@ -1,6 +1,7 @@
 package lt.codeacademy.blog.repository;
 
 import lt.codeacademy.blog.data.Post;
+import lt.codeacademy.blog.data.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -26,11 +26,11 @@ public class Comment {
     private UUID id;
     @NotNull
     @Column(columnDefinition="TEXT", nullable = false)
-    @Size(min = 3, max = 15)
-    private String comment;
+    @Size(min = 3, max = 200)
+    private String text;
     @CreationTimestamp
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable=false)
     private Date datetime;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,8 +41,8 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Comment(String comment, Post post, User user) {
-        this.comment = comment;
+    public Comment(String text, Post post, User user) {
+        this.text = text;
         this.post = post;
         this.user = user;
     }

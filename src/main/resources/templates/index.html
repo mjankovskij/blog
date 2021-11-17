@@ -22,7 +22,7 @@
             <a class="navbar-brand" href="#">BLOG</a>
             <div class="custom-auth-font p-2">
                 <span sec:authorize="isAuthenticated()">Welcome, [[${#request.userPrincipal.principal.username}]]!</span>
-                <a sec:authorize="isAuthenticated()" href="/logout"> <i class="bi bi-box-arrow-in-right"></i></a>
+                <a sec:authorize="isAuthenticated()" href="/user/logout"> <i class="bi bi-box-arrow-in-right"></i></a>
                 <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
             </div>
         </div>
@@ -72,7 +72,7 @@
                         <div class="comment position-relative col-12 bg-white border rounded p-2 m-0"
                              th:id="${comment.id}">
                             <b><span th:text="${comment.user.username}"></span></b>
-                            <div class="comment-text"><span th:text="${comment.text}"></span></div>
+                            <div class="comment-text text"><span th:text="${comment.text}"></span></div>
                             <!--    COMMENT edit/delete    -->
                             <div class="comment-edit position-absolute bg-light border top-0 p-0 end-0"
                                  sec:authorize="isAuthenticated()"

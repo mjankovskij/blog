@@ -38,7 +38,7 @@ public class Post {
     @Column(nullable = false, updatable=false)
     private Date datetime;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

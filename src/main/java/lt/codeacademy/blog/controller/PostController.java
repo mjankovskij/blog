@@ -38,7 +38,7 @@ public class PostController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PostMapping(value = "/create")
     public String processCreate(@Valid @ModelAttribute("newPost") Post post,
                                 BindingResult result,
                                 Model model) {

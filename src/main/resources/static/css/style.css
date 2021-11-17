@@ -61,25 +61,16 @@ nav .bi:hover,
 }
 
 .col-comment {
-    width: calc(100% - 60px) !important;
+    width: calc(100% - 80px) !important;
+    margin-left: 12px;
 }
 
 .col-comment-send {
-    width: 70px !important;
-    margin-left: -14px !important;
+    width: 60px !important;
 }
 
 .comment {
     min-height: 80px;
-}
-
-.comment .col-comment {
-    width: calc(100% - 52px) !important;
-    margin-right: 10px;
-}
-
-.comment .col-comment-send {
-    margin: 0 !important;
 }
 
 .comment-edit {
@@ -120,8 +111,23 @@ nav .bi:hover,
 .invalid-feedback li::first-letter{
     text-transform: capitalize;
 }
-form li{
-    margin-left: -5px;
+
+.invalid-feedback{
+    display: block !important;
+}
+
+header form li{
+    margin-left: -10px !important;
+}
+
+.post form li{
+    margin-left: 18px !important;
+    margin-bottom: 0px !important;
+}
+
+.form-comment-create .alert{
+    width: calc(100% - 24px);
+    margin-left: 12px !important;
 }
 
 @media only screen and (max-width: 576px) {
