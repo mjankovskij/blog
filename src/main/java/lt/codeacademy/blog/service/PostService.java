@@ -14,9 +14,6 @@ import java.util.UUID;
 @Service
 public class PostService {
 
-    @Autowired
-    UserRepository userRepository;
-
     private final PostRepository postRepository;
 
     public PostService(PostRepository postRepository) {
@@ -25,6 +22,10 @@ public class PostService {
 
     public Page<Post> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
+    }
+
+    public Post getById(UUID id) {
+        return postRepository.getById(id);
     }
 
     public void save(Post post) {

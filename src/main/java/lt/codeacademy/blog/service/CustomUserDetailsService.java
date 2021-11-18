@@ -2,6 +2,7 @@ package lt.codeacademy.blog.service;
 
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.repository.UserRepository;
+import lt.codeacademy.blog.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -4,11 +4,7 @@ import lt.codeacademy.blog.data.Role;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +27,7 @@ public class UserController {
                                   BindingResult result,
                                   HttpServletRequest request) {
         if (result.hasErrors()) {
-            return "fragments/register :: info-form";
+            return "fragments/register-form :: info-form";
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -47,7 +42,7 @@ public class UserController {
             request.login(user.getUsername(), passPlain);
         } catch (ServletException ignore) {
         }
-        return "fragments/register :: info-success";
+        return "fragments/register-form :: info-success";
     }
 
     @PostMapping(value = "/login")
@@ -57,10 +52,10 @@ public class UserController {
                                Model model) {
         try {
             request.login(user.getUsername(), user.getPassword());
-            return "fragments/login :: info-success";
+            return "fragments/login-form :: info-success";
         } catch (ServletException e) {
             model.addAttribute("error", e.getMessage());
-            return "fragments/login :: info-form";
+            return "fragments/login-form :: info-form";
         }
     }
 }

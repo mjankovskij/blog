@@ -79,7 +79,7 @@ nav .bi:hover,
 }
 
 .comment-text .text {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .col-comment {
@@ -115,6 +115,23 @@ nav .bi:hover,
     display: block;
     margin-top: 1px;
     margin-right: -1px;
+}
+
+.card a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.card a:hover{
+    color: #a5c9ff;
+}
+
+.container .card .description{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .modal-footer {
@@ -166,6 +183,9 @@ header form li {
     .pages-nums {
         margin-top: 30px !important;
     }
+    .container .card .description {
+        -webkit-line-clamp: 7;
+    }
 }
 
 @media only screen and (max-width: 576px) {
@@ -180,8 +200,13 @@ header form li {
         transform: none;
     }
 
-    .container {
+    .container,
+    .container-fluid {
         padding-left: 2px !important;
         padding-right: 2px !important;
+    }
+
+    .container .card .description {
+        -webkit-line-clamp: 10;
     }
 }

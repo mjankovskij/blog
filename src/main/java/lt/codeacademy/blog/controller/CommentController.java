@@ -1,12 +1,10 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Comment;
-import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.data.User;
-import lt.codeacademy.blog.repository.PostRepository;
-import lt.codeacademy.blog.repository.UserRepository;
 import lt.codeacademy.blog.service.CommentService;
-import org.springframework.http.HttpStatus;
+import lt.codeacademy.blog.service.PostService;
+import lt.codeacademy.blog.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +31,6 @@ public class CommentController {
     public ResponseEntity<?> handleAccessDeniedException() {
         return ResponseEntity.status(403).body("Access is denied!");
     }
-//    @ExceptionHandler({TransactionSystemException.class})
-//    public ResponseEntity<?> handleConstraintViolation(Exception ex) {
-//        return ResponseEntity.status(400).body(ex.getMessage());
-//    }
 
     @ExceptionHandler({TransactionSystemException.class})
     public ResponseEntity<?> handleConstraintViolation(Exception ex, WebRequest request) {
@@ -47,13 +41,13 @@ public class CommentController {
         return str.map(constraintViolation -> ResponseEntity.status(400).body("Comment " + constraintViolation.getMessage())).orElse(null);
     }
 
-    private final UserRepository userRepository;
-    private final PostRepository postRepository;
+    private final UserService userService;
+    private final PostService postService;
     private final CommentService commentService;
 
-    public CommentController(UserRepository userRepository, PostRepository postRepository, CommentService commentService) {
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
+    public CommentController(UserService userService, PostService postService, CommentService commentService) {
+        this.userService = userService;
+        this.postService = postService;
         this.commentService = commentService;
     }
 
@@ -64,15 +58,15 @@ public class CommentController {
                                 @RequestParam String post_id,
                                 Model model) {
         if (result.hasErrors()) {
-            return "fragments/comment :: info-form";
+            return "fragments/comment-form :: info-form";
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(auth.getName());
+        User user = userService.findByUsername(auth.getName());
         comment.setUser(user);
-        comment.setPost(postRepository.getById(UUID.fromString(post_id)));
+        comment.setPost(postService.getById(UUID.fromString(post_id)));
         commentService.save(comment);
         model.addAttribute("success", "Comment saved successfully.");
-        return "fragments/comment :: info-form";
+        return "fragments/comment-form :: info-form";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

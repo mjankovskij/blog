@@ -1,4 +1,4 @@
-package lt.codeacademy.blog.service;
+package lt.codeacademy.blog.security;
 
 import java.util.*;
 

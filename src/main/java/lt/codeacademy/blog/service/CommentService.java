@@ -22,35 +22,29 @@ public class CommentService {
     }
 
     public void save(Comment comment) {
-        commentRepository.save(comment);
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userRepository.findByUsername(auth.getName());
-//        if (user.getId() == comment.getUser().getId() || auth.getAuthorities().stream()
-//                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))){
-//            commentRepository.save(comment);
-//        }else{
-//            throw new IllegalArgumentException("Access is denied!");
-//        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName());
+        if (user.getId() == comment.getUser().getId() || auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))){
+            commentRepository.save(comment);
+        }else{
+            throw new IllegalArgumentException("Access is denied!");
+        }
     }
 
     public void delete(Comment comment) {
-        commentRepository.delete(comment);
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userRepository.findByUsername(auth.getName());
-//        if (user.getId() == comment.getUser().getId() || auth.getAuthorities().stream()
-//                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))){
-//            commentRepository.delete(comment);
-//        }else{
-//            throw new IllegalArgumentException("Access is denied!");
-//        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName());
+        if (user.getId() == comment.getUser().getId() || auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))){
+            commentRepository.delete(comment);
+        }else{
+            throw new IllegalArgumentException("Access is denied!");
+        }
     }
 
     public Comment getById(UUID id) {
         return commentRepository.getById(id);
     }
-
-//    public List<Comment> getComments() {
-//        return commentRepository.findAllByOrderByDatetimeDesc();
-//    }
 
 }
