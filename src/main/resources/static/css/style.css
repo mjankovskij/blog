@@ -1,6 +1,7 @@
 body {
     background: #fdf8f8;
     overflow-x: hidden;
+    font-family: monospace;
 }
 
 main {
@@ -39,7 +40,7 @@ header > .container-fluid {
 
 .post-edit form,
 .comment-edit form,
-nav form{
+nav form {
     display: inline-block !important;
 }
 
@@ -68,11 +69,17 @@ nav .bi:hover,
 }
 
 .card-body pre {
+    font-size: 14px;
+    text-align: justify;
     margin-bottom: 0;
     white-space: pre-wrap; /* Since CSS 2.1 */
     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.comment-text .text {
+  font-size: 14px;
 }
 
 .col-comment {

@@ -27,7 +27,7 @@ public class Post {
     @Type(type = "uuid-char")
     private UUID id;
     @NotNull
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 100)
     private String title;
     @NotNull
     @Size(min = 50, message = "Description should have min 50 characters")

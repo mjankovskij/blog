@@ -1,5 +1,5 @@
 <div th:fragment="posts" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts)}">Blog is empty.</div>
+    <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(posts.content)}">Blog is empty.</div>
     <div th:each="post: ${posts.content}">
         <div class="post card mt-4" th:id="${post.getId()}">
             <div class="card-header bg-secondary text-light d-flex justify-content-between position-relative">
