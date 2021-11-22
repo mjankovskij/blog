@@ -12,7 +12,7 @@ public class PasswordValidator implements ConstraintValidator<PasswordMatch, Use
         String password = user.getPassword();
         String repeatPassword = user.getPasswordRepeat();
 
-        constraintValidatorContext.buildConstraintViolationWithTemplate("Password not match")
+        constraintValidatorContext.buildConstraintViolationWithTemplate("{lt.blog.passwordNotMatch}")
                     .addPropertyNode("passwordRepeat")
                     .addConstraintViolation()
                     .disableDefaultConstraintViolation();

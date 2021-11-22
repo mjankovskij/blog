@@ -161,7 +161,7 @@ header form li {
 
 .post form li {
     margin-left: 18px !important;
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 .form-comment-create .alert {
@@ -172,6 +172,11 @@ header form li {
 .total-posts {
     margin-top: -5px !important;
     margin-left: -15px;
+}
+
+.dropdown-menu[data-bs-popper]{
+    left: auto !important;
+    right: 0 !important;
 }
 
 @media only screen and (max-width: 1024px) {

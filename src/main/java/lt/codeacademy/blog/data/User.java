@@ -35,7 +35,7 @@ public class User {
     @Size(min = 8, message = "Password should have min 8 characters")
     private String password;
     @Transient
-    @NotBlank(message = "Repeat password")
+    @NotBlank
     private String passwordRepeat;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

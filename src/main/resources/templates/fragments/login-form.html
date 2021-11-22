@@ -2,7 +2,7 @@
 
     <form class="form-login" th:action="@{/user/login}" th:object="${newUser}" method="post">
         <div class="mb-3">
-            <label class="form-label">Username</label>
+            <label class="form-label" th:text="#{lt.blog.username}"></label>
             <input type="text"
                    class="form-control"
                    th:field="*{username}"
@@ -12,7 +12,7 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label">Password</label>
+            <label class="form-label" th:text="#{lt.blog.password}"></label>
             <input type="password"
                    class="form-control"
                    th:field="*{password}"
@@ -21,9 +21,9 @@
                 <li th:text="${error}"></li>
             </ul>
         </div>
-        <button type="submit" class="btn btn-primary col-12">Login</button>
-        <div class="col-12 p-1">Don't have an account?</div>
-        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Register</button>
+        <button type="submit" class="btn btn-primary col-12" th:text="#{lt.blog.login}"></button>
+        <div class="col-12 p-1" th:text="#{lt.blog.dontHaveAnAccount}"></div>
+        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap" th:text="#{lt.blog.register}"></button>
     </form>
 </div>
 

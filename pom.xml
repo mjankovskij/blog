@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>lt.codeacademy</groupId>
-    <artifactId>eshop</artifactId>
+    <artifactId>blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>eshop</name>
-    <description>eshop</description>
+    <name>blog</name>
+    <description>blog</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

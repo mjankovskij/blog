@@ -1,35 +1,32 @@
 // AJAX form
 function form_submit_event(form_id) {
     let form = $(`.${form_id}`);
-        form.find('button:first-of-type').unbind().on('click', function (e) {
-            e.preventDefault();
-            form = $(e.currentTarget.closest('form'));
-            $.ajax({
-                url: form.attr('action'),
-                type: 'post',
-                data: form.serialize() + (form_id === "form-comment-create" ? `&post_id=${form.closest(".card").attr("id")}` : ''),
-                success: function (response) {
-                    console.log(response)
-                    console.log($(response))
-                    console.log($(response).find('.alert-success'))
-                    if ($(response).find('.invalid-feedback li').length) {
-                        form.replaceWith(response);
-                        $(`.${form_id}`).removeClass("d-none");
-                    } else if ($(response).find('.alert-success').length) {
-                        form.replaceWith(response);
-                        if(form_id === "form-post-create") {
-                            setTimeout(() => window.location.href = window.location.origin, 500);
-                        }else{
-                            setTimeout(() => window.location.reload(), 500);
-                        }
+    form.find('button:first-of-type').unbind().on('click', function (e) {
+        e.preventDefault();
+        form = $(e.currentTarget.closest('form'));
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            data: form.serialize() + (form_id === "form-comment-create" ? `&post_id=${form.closest(".card").attr("id")}` : ''),
+            success: function (response) {
+                if ($(response).find('.invalid-feedback li').length) {
+                    form.replaceWith(response);
+                    $(`.${form_id}`).removeClass("d-none");
+                } else if ($(response).find('.alert-success').length) {
+                    form.replaceWith(response);
+                    if (form_id === "form-post-create" && form.find("#id").val() === '') {
+                        setTimeout(() => window.location.href = window.location.origin, 500);
                     } else {
-                        location.reload();
+                        setTimeout(() => window.location.reload(), 500);
                     }
-                    form_submit_event(form_id);
-                    swap_auth_event(form_id);
+                } else {
+                    location.reload();
                 }
-            });
+                form_submit_event(form_id);
+                swap_auth_event(form_id);
+            }
         });
+    });
 }
 
 // AUTH
@@ -85,6 +82,7 @@ $('.edit-post').click(function (e) {
     $(".post").css('opacity', '1');
     postDOM.css('opacity', '0.5');
     $(window).scrollTop(0);
+    $(".single-edit").removeClass("d-none")
 });
 
 // COMMENT
@@ -96,7 +94,7 @@ $('.edit-comment').click(function (e) {
     commentFormDOM.find('#text').val(commentDOM.find('.text').text());
     $(".comment").css('opacity', '1');
     commentDOM.css('opacity', '0.5');
-    $(window).scrollTop(postDOM.height()+postDOM.offset().top-window.innerHeight/2);
+    $(window).scrollTop(postDOM.height() + postDOM.offset().top - window.innerHeight / 2);
 });
 
 //DELETE
@@ -104,7 +102,7 @@ function delete_form_event(value) {
     $(`.delete-${value}`).click(function (e) {
         e.preventDefault();
         const tempThis = $(this);
-        confirmDialog(`Delete ${value}?`, function () {
+        confirmDialog(strings['lt.blog.areYouSureDelete'], function () {
             const valDOM = tempThis.closest(`.${value}`);
             const form = tempThis.closest('form');
             $.ajax({
@@ -115,6 +113,9 @@ function delete_form_event(value) {
                     '_csrf': form.find('input[name="_csrf"]').val()
                 },
                 success: function (responseText) {
+                    if(window.location.pathname.split('/')[1]==='post'){
+                        window.location.href = window.location.origin
+                    }
                     valDOM.remove();
                     $(".response-message-center")
                         .removeClass("d-none")
@@ -146,5 +147,6 @@ function delete_form_event(value) {
         });
     });
 }
+
 delete_form_event("comment");
 delete_form_event("post");

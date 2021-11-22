@@ -5,6 +5,7 @@ import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.service.PostService;
 import lt.codeacademy.blog.service.UserService;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -28,17 +30,20 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
+    private final MessageSource messageSource;
 
-    public PostController(UserService userService, PostService postService) {
+    public PostController(UserService userService, PostService postService, MessageSource messageSource) {
         this.userService = userService;
         this.postService = postService;
+        this.messageSource = messageSource;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/create")
     public String processCreate(@Valid @ModelAttribute("newPost") Post post,
                                 BindingResult result,
-                                Model model) {
+                                Model model,
+                                Locale locale) {
         if (result.hasErrors()) {
             return "fragments/post-form :: info-form";
         }
@@ -46,19 +51,21 @@ public class PostController {
         User user = userService.findByUsername(auth.getName());
         post.setUser(user);
         postService.save(post);
-        model.addAttribute("success", "Post saved successfully.");
+        model.addAttribute("success",
+                messageSource.getMessage("lt.blog.postSavedSuccessfully", null, locale)
+        );
         return "fragments/post-form :: info-form";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam String id) {
+    public ResponseEntity<?> delete(@RequestParam String id, Locale locale) {
         try {
             postService.delete(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Post deleted successfully.");
+        return ResponseEntity.status(200).body(messageSource.getMessage("lt.blog.postDeletedSuccessfully", null, locale));
     }
 
     @GetMapping("/single/{id}")

@@ -4,8 +4,22 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">BLOG</a>
                 <div class="custom-auth-font p-2">
+                    <div class="nav-item dropdown d-inline-block me-2">
+                        <div class=" dropdown-toggle"
+                             href="#"
+                             id="navbarDropdownMenuLink"
+                             role="button"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="false">
+                            <span class="d-none d-sm-inline" th:text="#{lt.blog.languages}"></span>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" th:href="${#httpServletRequest.requestURI} + '?lang=EN'" th:text="#{lt.blog.en}"></a></li>
+                            <li><a class="dropdown-item" th:href="${#httpServletRequest.requestURI} + '?lang=LT'" th:text="#{lt.blog.lt}"></a></li>
+                        </ul>
+                    </div>
                     <i sec:authorize="isAnonymous()" class="bi bi-lock-fill" id="display-auth"></i>
-                    <span sec:authorize="isAuthenticated()">Welcome, [[${#request.userPrincipal.principal.username}]]!</span>
+                    <span sec:authorize="isAuthenticated()" class="d-none d-sm-inline"><span th:text="#{lt.blog.welcome}"></span>, [[${#request.userPrincipal.principal.username}]]!</span>
                     <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
                         <button type="submit"><i class="bi bi-box-arrow-in-right"></i></button>
                     </form>

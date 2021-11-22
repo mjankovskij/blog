@@ -3,7 +3,7 @@
     <form class="d-none form-register" th:action="@{/user/register}" th:object="${newUser}"
           method="post">
         <div class="mb-3">
-            <label class="form-label">Username</label>
+            <label class="form-label" th:text="#{lt.blog.username}"></label>
             <input type="text"
                    class="form-control"
                    th:field="*{username}"
@@ -13,7 +13,7 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label">Password</label>
+            <label class="form-label" th:text="#{lt.blog.password}"></label>
             <input type="password"
                    class="form-control"
                    th:field="*{password}"
@@ -23,7 +23,7 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label">Repeat password</label>
+            <label class="form-label" th:text="#{lt.blog.repeatPassword}"></label>
             <input type="password"
                    class="form-control"
                    th:field="*{passwordRepeat}"
@@ -32,9 +32,9 @@
                 <li th:each="err : ${#fields.errors('passwordRepeat')}" th:text="${err}"></li>
             </ul>
         </div>
-        <button type="submit" class="btn btn-primary col-12">Register</button>
-        <div class="col-12 p-1">Already have an account?</div>
-        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap">Login</button>
+        <button type="submit" class="btn btn-primary col-12" th:text="#{lt.blog.register}"></button>
+        <div class="col-12 p-1" th:text="#{lt.blog.alreadyHaveAnAccount}"></div>
+        <button type="submit" class="btn btn-secondary col-12 p-1 auth-swap" th:text="#{lt.blog.login}">Login</button>
     </form>
 </div>
 
