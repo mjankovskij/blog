@@ -68,8 +68,8 @@ function confirmDialog(message, onConfirm) {
     const modal = $("#confirmModal");
     modal.modal("show");
     $("#confirmMessage").empty().append(message);
-    $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
-    $("#confirmCancel").unbind().one("click", fClose);
+    $("#confirmOk").text(strings['lt.blog.confirm']).unbind().one('click', onConfirm).one('click', fClose);
+    $("#confirmCancel").text(strings['lt.blog.cancel']).unbind().one("click", fClose);
 }
 
 // BLOG
