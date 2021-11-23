@@ -17,5 +17,5 @@ Just uncomment the one you need H2 or PostgreSQL, by default H2 with init data (
 
 ## Screnshoots
 ![image](https://user-images.githubusercontent.com/70883106/143043298-2598626a-e651-4def-b361-f1cd476b5a3a.png)
-![Screenshot 2021-11-23 163036](https://user-images.githubusercontent.com/70883106/143043323-a5eb5199-2536-464c-b20e-48ab6802830d.jpg)
+![Screenshot 2021-11-23 175822](https://user-images.githubusercontent.com/70883106/143058785-b6a311fc-c538-4320-bd9f-80c11a2fb594.jpg)
 ![Screenshot 2021-11-23 162912](https://user-images.githubusercontent.com/70883106/143043555-8f8ac907-571b-4821-95d2-44cfa45aca9f.jpg)
