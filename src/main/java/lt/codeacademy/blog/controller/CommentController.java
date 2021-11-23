@@ -35,15 +35,6 @@ public class CommentController {
         return ResponseEntity.status(403).body("Access is denied!");
     }
 
-    @ExceptionHandler({TransactionSystemException.class})
-    public ResponseEntity<?> handleConstraintViolation(Exception ex, WebRequest request) {
-        Throwable cause = ((TransactionSystemException) ex).getRootCause();
-        assert cause != null;
-        Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException) cause).getConstraintViolations();
-        Optional<ConstraintViolation<?>> str = constraintViolations.stream().findFirst();
-        return str.map(constraintViolation -> ResponseEntity.status(400).body("Comment " + constraintViolation.getMessage())).orElse(null);
-    }
-
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
