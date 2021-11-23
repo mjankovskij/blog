@@ -34,8 +34,8 @@ public class Comment {
     private Date datetime;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id", nullable = false, updatable = false)
-    private Post post;
+    @JoinColumn(name = "blog_id", nullable = false, updatable = false)
+    private Blog blog;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)

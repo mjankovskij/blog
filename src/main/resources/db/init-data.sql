@@ -6,7 +6,7 @@ INSERT INTO Roles(id, name, user_id)
 VALUES ('6c9993bc-a831-42da-9f04-8c78584acb7a', 'ROLE_ADMIN', '26d6b7e7-0935-4292-ba9a-b590bd82f85b'),
        ('d357164c-bb5e-40f3-b594-c74cefa5ced1', 'ROLE_USER', '372a262b-f482-4b96-9848-7fa8977c1456');
 
-INSERT INTO Posts(id, datetime, title, description, user_id)
+INSERT INTO Blogs(id, datetime, title, description, user_id)
 VALUES ('0342d18f-9ea2-4dd9-ba00-a47e997a144d', '2021-11-18 16:37:12', 'Straipsnis – analitinis žurnalistikos žanras', 'Paprastai žurnalistikoje straipsniai skirstomi į:
 redakcinius – vedamasis, redakcijos nuostatas atspindintis, jos vardu parašytas, neretai nenurodant konkretaus autoriaus,
 rašinys, dažnai atsiliepiantis į kokius nors įvykius, paaiškėjusius faktus, tendencijas. Dažniausiai publikuojamas nuolatinėje laikraščio ar žurnalo vietoje, gali būti be pavadinimo, tik su nuolatine rubrika. Būdinga nedidelė, neretai vienoda visiems leidinio redakciniams straipsniams apimtis, glaustas minčių dėstymas, tezių pobūdžio argumentacija, naudojami publicistinės retorikos elementai. Įprasta pateikti išvadas, apibendrinimus, atspindinčius redakcijos nuostatas. Susiformavo XIX a. vid.;
@@ -44,7 +44,7 @@ Kompiuterinių žaidimų turnyrai dažnas reiškinys, egzistuoja profesionalios 
 1927 m. sėkmingai pademonstruotas pirmasis transatlantinis skambutis. 1946 m. atliktas pirmasis komercinis skambutis mobiliuoju telefonu. 1958 m. pradėti naudoti pirmieji modemai tiesioginiam susijungimui naudojant telefonines linijas.', '26d6b7e7-0935-4292-ba9a-b590bd82f85b');
 
 
-INSERT INTO Comments(id, datetime, text, post_id, user_id)
+INSERT INTO Comments(id, datetime, text, blog_id, user_id)
 VALUES ('d85273b0-5fed-4934-8c25-09f6ba45ff27', '2021-11-18 17:42:45', 'labai idomu', '3b3df024-d406-45db-badb-7507139a8563', '26d6b7e7-0935-4292-ba9a-b590bd82f85b'),
        ('e394b01e-f6b2-469c-9af5-28c1b7118b15', '2021-11-18 17:42:58', 'megstu muzika', 'deae3c63-d616-4e69-911b-4b127d6d3814', '26d6b7e7-0935-4292-ba9a-b590bd82f85b'),
        ('7c6cf25d-be43-4504-95d4-55e1ca890c69', '2021-11-18 17:43:02', 'tikrai', 'deae3c63-d616-4e69-911b-4b127d6d3814', '26d6b7e7-0935-4292-ba9a-b590bd82f85b'),

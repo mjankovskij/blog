@@ -6,15 +6,15 @@ function form_submit_event(form_id) {
         form = $(e.currentTarget.closest('form'));
         $.ajax({
             url: form.attr('action'),
-            type: 'post',
-            data: form.serialize() + (form_id === "form-comment-create" ? `&post_id=${form.closest(".card").attr("id")}` : ''),
+            type: "POST",
+            data: form.serialize() + (form_id === "form-comment-create" ? `&blog_id=${form.closest(".card").attr("id")}` : ''),
             success: function (response) {
                 if ($(response).find('.invalid-feedback li').length) {
                     form.replaceWith(response);
                     $(`.${form_id}`).removeClass("d-none");
                 } else if ($(response).find('.alert-success').length) {
                     form.replaceWith(response);
-                    if (form_id === "form-post-create" && form.find("#id").val() === '') {
+                    if (form_id === "form-blog-create" && form.find("#id").val() === '') {
                         setTimeout(() => window.location.href = window.location.origin, 500);
                     } else {
                         setTimeout(() => window.location.reload(), 500);
@@ -32,7 +32,7 @@ function form_submit_event(form_id) {
 // AUTH
 form_submit_event("form-register");
 form_submit_event("form-login");
-form_submit_event("form-post-create");
+form_submit_event("form-blog-create");
 form_submit_event("form-comment-create");
 
 
@@ -73,28 +73,28 @@ function confirmDialog(message, onConfirm) {
 }
 
 // BLOG
-$('.edit-post').click(function (e) {
-    const postDOM = $(this).closest(".post");
-    const postFormDOM = $('.form-post-create');
-    postFormDOM.find('#id').val(postDOM.attr('id'));
-    postFormDOM.find('#title').val(postDOM.find('.title').text());
-    postFormDOM.find('#description').val(postDOM.find('.description').text());
-    $(".post").css('opacity', '1');
-    postDOM.css('opacity', '0.5');
+$('.edit-blog').click(function (e) {
+    const blogDOM = $(this).closest(".blog");
+    const blogFormDOM = $('.form-blog-create');
+    blogFormDOM.find('#id').val(blogDOM.attr('id'));
+    blogFormDOM.find('#title').val(blogDOM.find('.title').text());
+    blogFormDOM.find('#description').val(blogDOM.find('.description').text());
+    $(".blog").css('opacity', '1');
+    blogDOM.css('opacity', '0.5');
     $(window).scrollTop(0);
     $(".single-edit").removeClass("d-none")
 });
 
 // COMMENT
 $('.edit-comment').click(function (e) {
-    const postDOM = $(this).closest(".post");
+    const blogDOM = $(this).closest(".blog");
     const commentDOM = $(this).closest(".comment");
     const commentFormDOM = $('.form-comment-create');
     commentFormDOM.find('#id').val(commentDOM.attr('id'));
     commentFormDOM.find('#text').val(commentDOM.find('.text').text());
     $(".comment").css('opacity', '1');
     commentDOM.css('opacity', '0.5');
-    $(window).scrollTop(postDOM.height() + postDOM.offset().top - window.innerHeight / 2);
+    $(window).scrollTop(blogDOM.height() + blogDOM.offset().top - window.innerHeight / 2);
 });
 
 //DELETE
@@ -113,8 +113,10 @@ function delete_form_event(value) {
                     '_csrf': form.find('input[name="_csrf"]').val()
                 },
                 success: function (responseText) {
-                    if(window.location.pathname.split('/')[1]==='post'){
-                        window.location.href = window.location.origin
+                    if (value === "comment") {
+                        setTimeout(() => window.location.reload(), 500);
+                    } else if (window.location.pathname.split('/')[1] === 'blog') {
+                        setTimeout(() => window.location.href = window.location.origin, 200);
                     }
                     valDOM.remove();
                     $(".response-message-center")
@@ -149,4 +151,4 @@ function delete_form_event(value) {
 }
 
 delete_form_event("comment");
-delete_form_event("post");
+delete_form_event("blog");

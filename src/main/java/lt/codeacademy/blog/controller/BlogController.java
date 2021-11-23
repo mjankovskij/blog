@@ -1,9 +1,9 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Comment;
-import lt.codeacademy.blog.data.Post;
+import lt.codeacademy.blog.data.Blog;
 import lt.codeacademy.blog.data.User;
-import lt.codeacademy.blog.service.PostService;
+import lt.codeacademy.blog.service.BlogService;
 import lt.codeacademy.blog.service.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -21,59 +21,59 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/post")
-public class PostController {
+@RequestMapping("/blog")
+public class BlogController {
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<?> handleAccessDeniedException() {
         return ResponseEntity.status(403).body("Access is denied!");
     }
 
     private final UserService userService;
-    private final PostService postService;
+    private final BlogService blogService;
     private final MessageSource messageSource;
 
-    public PostController(UserService userService, PostService postService, MessageSource messageSource) {
+    public BlogController(UserService userService, BlogService blogService, MessageSource messageSource) {
         this.userService = userService;
-        this.postService = postService;
+        this.blogService = blogService;
         this.messageSource = messageSource;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/create")
-    public String processCreate(@Valid @ModelAttribute("newPost") Post post,
+    public String processCreate(@Valid @ModelAttribute("newBlog") Blog blog,
                                 BindingResult result,
                                 Model model,
                                 Locale locale) {
         if (result.hasErrors()) {
-            return "fragments/post-form :: info-form";
+            return "fragments/blog-form :: info-form";
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());
-        post.setUser(user);
-        postService.save(post);
+        blog.setUser(user);
+        blogService.save(blog);
         model.addAttribute("success",
-                messageSource.getMessage("lt.blog.postSavedSuccessfully", null, locale)
+                messageSource.getMessage("lt.blog.blogSavedSuccessfully", null, locale)
         );
-        return "fragments/post-form :: info-form";
+        return "fragments/blog-form :: info-form";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam String id, Locale locale) {
         try {
-            postService.delete(UUID.fromString(id));
+            blogService.delete(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body(messageSource.getMessage("lt.blog.postDeletedSuccessfully", null, locale));
+        return ResponseEntity.status(200).body(messageSource.getMessage("lt.blog.blogDeletedSuccessfully", null, locale));
     }
 
     @GetMapping("/single/{id}")
-    public String loadPost(Model model, @PathVariable UUID id) {
+    public String loadBlog(Model model, @PathVariable UUID id) {
         model.addAttribute("newUser", new User());
-        model.addAttribute("newPost", new Post());
+        model.addAttribute("newBlog", new Blog());
         model.addAttribute("newComment", new Comment());
-        model.addAttribute("post", postService.getById(id));
-        return "post";
+        model.addAttribute("blog", blogService.getById(id));
+        return "blog";
     }
 }

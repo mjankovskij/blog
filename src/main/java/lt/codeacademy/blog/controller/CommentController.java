@@ -3,7 +3,7 @@ package lt.codeacademy.blog.controller;
 import lt.codeacademy.blog.data.Comment;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.service.CommentService;
-import lt.codeacademy.blog.service.PostService;
+import lt.codeacademy.blog.service.BlogService;
 import lt.codeacademy.blog.service.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +29,13 @@ public class CommentController {
     }
 
     private final UserService userService;
-    private final PostService postService;
+    private final BlogService blogService;
     private final CommentService commentService;
     private final MessageSource messageSource;
 
-    public CommentController(UserService userService, PostService postService, CommentService commentService, MessageSource messageSource) {
+    public CommentController(UserService userService, BlogService blogService, CommentService commentService, MessageSource messageSource) {
         this.userService = userService;
-        this.postService = postService;
+        this.blogService = blogService;
         this.commentService = commentService;
         this.messageSource = messageSource;
     }
@@ -44,7 +44,7 @@ public class CommentController {
     @PostMapping(value = "/create")
     public String processCreate(@Valid @ModelAttribute("newComment") Comment comment,
                                 BindingResult result,
-                                @RequestParam String post_id,
+                                @RequestParam String blog_id,
                                 Model model,
                                 Locale locale) {
         if (result.hasErrors()) {
@@ -53,7 +53,7 @@ public class CommentController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());
         comment.setUser(user);
-        comment.setPost(postService.getById(UUID.fromString(post_id)));
+        comment.setBlog(blogService.getById(UUID.fromString(blog_id)));
         commentService.save(comment);
         model.addAttribute("success",
                 messageSource.getMessage("lt.blog.commentSavedSuccessfully", null, locale)

@@ -38,13 +38,13 @@ header > .container-fluid {
     cursor: pointer;
 }
 
-.post-edit form,
+.blog-edit form,
 .comment-edit form,
 nav form {
     display: inline-block !important;
 }
 
-.post-edit form button,
+.blog-edit form button,
 .comment-edit form button,
 nav form button {
     padding: 0;
@@ -106,12 +106,12 @@ nav .bi:hover,
     border-top-right-radius: 5px;
 }
 
-.post-edit {
+.blog-edit {
     color: #212529;
     display: none;
 }
 
-.card:hover .post-edit {
+.card:hover .blog-edit {
     display: block;
     margin-top: 1px;
     margin-right: -1px;
@@ -159,7 +159,7 @@ header form li {
     margin-left: -10px !important;
 }
 
-.post form li {
+.blog form li {
     margin-left: 18px !important;
     margin-bottom: 0 !important;
 }
@@ -169,7 +169,7 @@ header form li {
     margin-left: 12px !important;
 }
 
-.total-posts {
+.total-blogs {
     margin-top: -5px !important;
     margin-left: -15px;
 }
@@ -180,7 +180,7 @@ header form li {
 }
 
 @media only screen and (max-width: 1024px) {
-    .total-posts {
+    .total-blogs {
         width: 100% !important;
         margin-top: -90px !important;
     }

@@ -17,8 +17,8 @@ import java.util.UUID;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "Posts")
-public class Post {
+@Table(name = "Blogs")
+public class Blog {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
@@ -41,6 +41,6 @@ public class Post {
     private User user;
 
     @OrderBy("datetime ASC")
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
 }

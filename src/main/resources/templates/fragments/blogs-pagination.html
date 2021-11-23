@@ -1,37 +1,37 @@
 <div th:fragment="pagination" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div th:fragment="paginator(posts)" class="row mt-2" th:if="${!#lists.isEmpty(posts.content)}">
+    <div th:fragment="paginator(blogs)" class="row mt-2" th:if="${!#lists.isEmpty(blogs.content)}">
         <div class="col-2"></div>
         <div class="col-8 pages-nums">
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item"
-                        th:classappend="${posts.number eq 0 ? 'disabled' : ''}">
+                        th:classappend="${blogs.number eq 0 ? 'disabled' : ''}">
                         <a class="page-link"
                            aria-label="Previous"
-                           th:href="@{/(page=${posts.number})}">
+                           th:href="@{/(page=${blogs.number})}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item"
-                        th:each="pageNumb: ${#numbers.sequence(0, posts.totalPages - 1)}"
-                        th:classappend="${pageNumb eq posts.number ? 'active' : ''}">
+                        th:each="pageNumb: ${#numbers.sequence(0, blogs.totalPages - 1)}"
+                        th:classappend="${pageNumb eq blogs.number ? 'active' : ''}">
                         <a class="page-link"
                            th:href="@{/(page=${pageNumb})}"
                            th:text="${pageNumb} + 1"></a>
                     </li>
                     <li class="page-item"
-                        th:classappend="${posts.number eq posts.totalPages - 1 ? 'disabled': ''}">
+                        th:classappend="${blogs.number eq blogs.totalPages - 1 ? 'disabled': ''}">
                         <a class="page-link"
                            aria-label="Next"
-                           th:href="@{/(page=${posts.number} + 1)}">
+                           th:href="@{/(page=${blogs.number} + 1)}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
-        <div class="col-2 text-end total-posts">
-            <span th:text="#{lt.blog.totalPosts}"></span>: <span th:text="${posts.totalElements}"></span>
+        <div class="col-2 text-end total-blogs">
+            <span th:text="#{lt.blog.totalBlogs}"></span>: <span th:text="${blogs.totalElements}"></span>
         </div>
     </div>
 </div>

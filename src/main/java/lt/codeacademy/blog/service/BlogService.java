@@ -1,7 +1,7 @@
 package lt.codeacademy.blog.service;
 
-import lt.codeacademy.blog.data.Post;
-import lt.codeacademy.blog.repository.PostRepository;
+import lt.codeacademy.blog.data.Blog;
+import lt.codeacademy.blog.repository.BlogRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,27 +10,27 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class PostService {
+public class BlogService {
 
-    private final PostRepository postRepository;
+    private final BlogRepository postRepository;
 
-    public PostService(PostRepository postRepository) {
+    public BlogService(BlogRepository postRepository) {
         this.postRepository = postRepository;
     }
 
-    public Page<Post> getPosts(Pageable pageable) {
+    public Page<Blog> getBlogs(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
 
-    public Post getById(UUID id) {
+    public Blog getById(UUID id) {
         return postRepository.getById(id);
     }
 
-    public void save(Post post) {
-            postRepository.save(post);
+    public void save(Blog post) {
+        postRepository.save(post);
     }
 
-    public List<Post> getPosts() {
+    public List<Blog> getBlogs() {
         return postRepository.findAll();
     }
 

@@ -39,7 +39,7 @@ public class User {
     private String passwordRepeat;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Post> posts;
+    private Set<Blog> blogs;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Comment> comments;
