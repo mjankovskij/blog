@@ -2,8 +2,6 @@ package lt.codeacademy.blog.service;
 
 import lt.codeacademy.blog.data.Post;
 import lt.codeacademy.blog.repository.PostRepository;
-import lt.codeacademy.blog.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +31,7 @@ public class PostService {
     }
 
     public List<Post> getPosts() {
-        return postRepository.findAllByOrderByDatetimeDesc();
+        return postRepository.findAll();
     }
 
     public void delete(UUID id) {

@@ -1,6 +1,5 @@
 package lt.codeacademy.blog.validator.annotation;
 
-
 import lt.codeacademy.blog.validator.UsernameValidator;
 
 import javax.validation.Constraint;

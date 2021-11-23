@@ -1,7 +1,5 @@
 package lt.codeacademy.blog.security;
 
-import javax.sql.DataSource;
-
 import lt.codeacademy.blog.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
