@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
@@ -25,9 +26,11 @@ public class Blog {
     @Type(type = "uuid-char")
     private UUID id;
     @NotNull
+    @NotBlank
     @Size(min = 5, max = 100)
     private String title;
     @NotNull
+    @NotBlank
     @Size(min = 50, message = "Description should have min 50 characters")
     @Column(columnDefinition="TEXT")
     private String description;

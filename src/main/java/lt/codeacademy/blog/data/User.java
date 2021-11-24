@@ -28,10 +28,12 @@ public class User {
     @Type(type="uuid-char")
     private UUID id;
     @NotNull
+    @NotBlank
     @UniqueUsername
     @Size(min = 3, max = 20)
     private String username;
     @NotNull
+    @NotBlank
     @Size(min = 8, message = "Password should have min 8 characters")
     private String password;
     @Transient
@@ -47,8 +49,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Role> roles;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }
