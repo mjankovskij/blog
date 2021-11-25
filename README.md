@@ -2,10 +2,11 @@
 
 ## Start App
 1. Copy repository
-2. Setup SDK
-3. Right mouse click on pom.xml, select 'Add as maven project'.
-4. Run App from .../src/main/java/lt.codeacademy.blog/BlogApplication, right click on BlogApplication, select 'RunBlogApplication'
-5. Visit http://localhost:8080
+3. Setup SDK
+4. Right mouse click on pom.xml, select 'Add as maven project'
+2. Set up your own DB data (blog/src/main/resources/application.properties)
+5. Run App from .../src/main/java/lt.codeacademy.blog/BlogApplication, right click on BlogApplication, select 'RunBlogApplication'
+6. Visit http://localhost:8080
 
 ## Default Users
 0. Username, password, role

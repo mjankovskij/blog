@@ -47,7 +47,6 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public String processLogin(@ModelAttribute("newUser") User user,
-                               BindingResult result,
                                HttpServletRequest request,
                                Model model) {
         try {

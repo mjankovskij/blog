@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UsernameValidator.class)
 public @interface UniqueUsername {
-    String message() default "Username is already registered";
+    String message() default "{lt.blog.usernameAlreadyExists}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
