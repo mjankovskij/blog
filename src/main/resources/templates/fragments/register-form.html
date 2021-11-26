@@ -1,4 +1,4 @@
-<div th:fragment="info-form" th:remove="tag">
+<div th:fragment="info-form" th:remove="tag" xmlns:th="http://thymeleaf.org">
 
     <form class="d-none form-register" th:action="@{/user/register}" th:object="${newUser}"
           method="post">

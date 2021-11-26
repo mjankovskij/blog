@@ -1,5 +1,4 @@
-<div th:fragment="info-form" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
-
+<div th:fragment="info-form" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
     <form class="form-blog-create" sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/blog/create}" th:object="${newBlog}" method="post" >
         <input type="hidden"
                class="form-control"

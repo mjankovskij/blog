@@ -1,4 +1,4 @@
-<div th:fragment="info-form" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="info-form" th:remove="tag" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://thymeleaf.org">
     <form class="row form-comment-create" sec:authorize="isAuthenticated()" th:action="@{/comment/create}" th:object="${newComment}" method="post">
         <input type="hidden"
                class="form-control"

@@ -1,4 +1,4 @@
-<div th:fragment="pagination" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="pagination" th:remove="tag" xmlns:th="http://thymeleaf.org">
     <div th:fragment="paginator(blogs)" class="row mt-2" th:if="${!#lists.isEmpty(blogs.content)}">
         <div class="col-2"></div>
         <div class="col-8 pages-nums">

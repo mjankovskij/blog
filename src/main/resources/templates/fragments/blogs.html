@@ -1,4 +1,4 @@
-<div th:fragment="blogs" th:remove="tag" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="blogs" th:remove="tag" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://thymeleaf.org">
     <div class="alert alert-danger mt-2" th:if="${#lists.isEmpty(blogs.content)}" th:text="#{lt.blog.empty.blogs}"></div>
     <div th:each="blog: ${blogs.content}">
         <div class="blog card mt-4" th:id="${blog.getId()}">
@@ -23,8 +23,8 @@
                 <pre><p class="card-text description" th:text="${blog.description}"></p></pre>
             </div>
             <!--    COMMENTS    -->
-            <div class="card-footer">
-                <div class="text-end">
+            <div class="card-footer" th:if="${blog.comments.size}>0 or ${#authorization.expression('isAuthenticated()')}">
+                <div class="text-end" th:if="${blog.comments.size}>0">
                     <span th:text="#{lt.blog.totalComments}"></span>: <span th:text="${blog.comments.size}"></span>
                 </div>
                 <div class="col-12 mb-2" th:each="comment: ${blog.comments}">
