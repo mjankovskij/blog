@@ -2,7 +2,6 @@ package lt.codeacademy.blog.service;
 
 import lt.codeacademy.blog.data.Comment;
 import lt.codeacademy.blog.repository.CommentRepository;
-import lt.codeacademy.blog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
