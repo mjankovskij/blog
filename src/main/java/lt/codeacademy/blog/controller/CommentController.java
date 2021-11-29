@@ -1,6 +1,7 @@
 package lt.codeacademy.blog.controller;
 
 import lt.codeacademy.blog.data.Comment;
+import lt.codeacademy.blog.data.Role;
 import lt.codeacademy.blog.data.User;
 import lt.codeacademy.blog.service.CommentService;
 import lt.codeacademy.blog.service.BlogService;
@@ -52,9 +53,13 @@ public class CommentController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());
-        comment.setUser(user);
-        comment.setBlog(blogService.getById(UUID.fromString(blog_id)));
-        commentService.save(comment);
+        if (!user.getRoles().stream().findFirst().get().getName().equals("ROLE_ADMIN") && comment.getId() != null && user != commentService.getById(comment.getId()).getUser()) {
+            throw new AccessDeniedException("Access is denied!");
+        } else {
+            comment.setBlog(blogService.getById(UUID.fromString(blog_id)));
+            comment.setUser(user);
+            commentService.save(comment);
+        }
         model.addAttribute("success",
                 messageSource.getMessage("lt.blog.commentSavedSuccessfully", null, locale)
         );
